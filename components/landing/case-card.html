@@ -1,0 +1,64 @@
+<!--
+  component: landing-case-card
+  category: landing
+  title_ru: Кейс-карточка – сервисная компания на агентах
+  use_for: Блок «Кто уже делает» на лендинге или слайд отчёта: один кейс с цифрами и честной оговоркой про неоткрытую выручку.
+  data_slots: название компании и буква в аватаре, отрасль и страна, метка кейса, описание, два пункта, оговорка, два числа и подписи
+  source: 21st.dev #5964 «Project Card», автор ravikatiyar162
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-landing-case-card (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-landing-case-card-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-landing-case-card-root,.hc-landing-case-card-root *{box-sizing:border-box}
+.hc-landing-case-card-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-landing-case-card-root *{min-width:0}
+.hc-landing-case-card-root svg{max-width:100%;height:auto}
+.hc-landing-case-card-root .mono{font-family:var(--mono)}
+.hc-landing-case-card-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-landing-case-card-root mark,.hc-landing-case-card-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-landing-case-card-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-landing-case-card-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-landing-case-card-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-landing-case-card-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-landing-case-card-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-landing-case-card-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-landing-case-card-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-landing-case-card-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-landing-case-card-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-landing-case-card-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-landing-case-card-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-landing-case-card-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-landing-case-card-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-landing-case-card{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);border:1px solid var(--line);border-radius:22px;background:var(--paper);overflow:hidden;box-shadow:0 14px 40px rgba(10,10,10,.06)}
+.hc-landing-case-card .l{padding:clamp(20px,3vw,34px);display:flex;flex-direction:column;gap:14px}
+.hc-landing-case-card .h{display:flex;gap:14px;align-items:center}
+.hc-landing-case-card .mono-av{width:48px;height:48px;border-radius:14px;background:var(--ink);color:var(--lime);display:grid;place-items:center;font-weight:800;font-size:22px;flex:none}
+.hc-landing-case-card h3{margin:0;font-size:clamp(22px,3vw,32px);letter-spacing:-.03em}
+.hc-landing-case-card .sub{font-size:13px;color:var(--muted)}
+.hc-landing-case-card .txt{font-size:16px;line-height:1.5;color:var(--soft);margin:0}
+.hc-landing-case-card ul{margin:0;padding:0;list-style:none;display:grid;gap:8px;font-size:15px}
+.hc-landing-case-card li{display:flex;gap:10px;align-items:baseline}
+.hc-landing-case-card li:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--lime);border:1px solid var(--ink);flex:none;transform:translateY(-1px)}
+.hc-landing-case-card .warn{font-size:13px;color:var(--soft);border-top:1px dashed var(--line);padding-top:12px}
+.hc-landing-case-card .r{background:var(--dark);color:var(--bg);padding:clamp(20px,3vw,34px);display:grid;gap:18px;align-content:center}
+.hc-landing-case-card .r .eyebrow{color:#C9C7B8}
+.hc-landing-case-card .r .num{font-size:clamp(40px,5vw,58px);display:block;margin-top:4px}
+.hc-landing-case-card .r .num.lm{color:var(--lime)}
+@media(max-width:760px){.hc-landing-case-card{grid-template-columns:1fr}}
+</style>
+<div class="hc-landing-case-card-root">
+<div class="hc-landing-case-card">
+<div class="l"><div class="h"><div class="mono-av" aria-hidden="true">А</div><div><h3>Компания А</h3><span class="sub">Страхование · США · example.com</span></div></div>
+<span class="tag" style="align-self:flex-start">Кейс · частично проверено</span>
+<p class="txt">Брокер коммерческого страхования и сопровождение полисов – по описанию из открытых источников, пример данных.</p>
+<ul><li>Раунд seed + Series A, ведущий инвестор – фонд Б, 2026 год</li><li>ИИ обслуживает больше 1 000 клиентов в месяц</li></ul>
+<div class="warn">Выручку Компания А не раскрывает. Цифры – пример данных, не аудит.</div></div>
+<div class="r"><div><span class="eyebrow">клиентов</span><span class="num lm">5&nbsp;000+</span></div><div><span class="eyebrow">привлечено, seed + A</span><span class="num">≈$46,8M</span></div></div>
+</div>
+</div>

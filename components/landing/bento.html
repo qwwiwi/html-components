@@ -1,0 +1,65 @@
+<!--
+  component: landing-bento
+  category: landing
+  title_ru: Bento – пять карточек
+  use_for: Секция «Что внутри» на лендинге или итоговый слайд презентации: одна большая карточка и четыре малых.
+  data_slots: заголовки и подписи карточек, большие числа (15, 0, 50%+, 201, 53), метки путей, строка примеров
+  source: 21st.dev #2201 «Bento Grid», автор shadcnblockscom
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-landing-bento (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-landing-bento-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-landing-bento-root,.hc-landing-bento-root *{box-sizing:border-box}
+.hc-landing-bento-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-landing-bento-root *{min-width:0}
+.hc-landing-bento-root svg{max-width:100%;height:auto}
+.hc-landing-bento-root .mono{font-family:var(--mono)}
+.hc-landing-bento-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-landing-bento-root mark,.hc-landing-bento-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-landing-bento-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-landing-bento-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-landing-bento-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-landing-bento-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-landing-bento-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-landing-bento-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-landing-bento-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-landing-bento-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-landing-bento-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-landing-bento-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-landing-bento-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-landing-bento-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-landing-bento-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-landing-bento{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:minmax(150px,auto);gap:14px}
+.hc-landing-bento .b{border:1px solid var(--line);border-radius:20px;background:var(--paper);padding:22px;display:flex;flex-direction:column;justify-content:space-between;gap:14px;box-shadow:0 14px 40px rgba(10,10,10,.05)}
+.hc-landing-bento .b h3{margin:8px 0 0;font-size:clamp(18px,2.2vw,26px);letter-spacing:-.025em;line-height:1.12}
+.hc-landing-bento .b p{margin:0;font-size:14px;color:var(--soft);line-height:1.45}
+.hc-landing-bento .big{grid-column:span 2;grid-row:span 2}
+.hc-landing-bento .big .n{font-size:clamp(64px,10vw,128px)}
+.hc-landing-bento .dk{background:var(--dark);border-color:var(--dark);color:var(--bg)}
+.hc-landing-bento .dk p,.hc-landing-bento .dk .eyebrow{color:#D9D7CA}
+.hc-landing-bento .dk .n2{font-size:64px;color:var(--lime)}
+.hc-landing-bento .wide{grid-column:span 2}
+.hc-landing-bento .all{grid-column:1/-1}
+.hc-landing-bento .n2{font-size:clamp(40px,5vw,60px);font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-landing-bento .chips{display:flex;gap:6px;flex-wrap:wrap}
+@media(max-width:900px){.hc-landing-bento{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.hc-landing-bento{grid-template-columns:1fr}.hc-landing-bento .big,.hc-landing-bento .wide,.hc-landing-bento .all{grid-column:auto;grid-row:auto}}
+</style>
+<div class="hc-landing-bento-root">
+<div class="hc-landing-bento">
+<div class="b big"><div><span class="eyebrow">Ниши для рынка</span><h3>15 услуг, где результат можно посчитать и продать за единицу</h3></div>
+<div><span class="num n">15</span><p style="margin-top:10px">от входящих заявок до логистических документов – с единицей цены для пилота (гипотезы, не прайс)</p></div></div>
+<div class="b dk"><span class="eyebrow">Свой регион в каталоге</span><span class="num n2">0</span><p>из 201 компании – ниша свободна, пример данных</p></div>
+<div class="b"><span class="eyebrow">Целевая маржа</span><span class="n2">50%+</span><p>маржа против ≈30% у обычных сервисных компаний, пример данных</p></div>
+<div class="b wide"><div><span class="eyebrow">Три пути</span><h3>Специалист, партнёр, предприниматель</h3></div>
+<div class="chips"><span class="tag line">Путь 1 · учитесь</span><span class="tag dk">Путь 2 · партнёрство</span><span class="tag line">Путь 3 · свой бизнес</span></div></div>
+<div class="b all"><div><span class="eyebrow">Каталог фирм</span><h3>201 компания в 53 отраслях – смотрим, кто уже делает</h3></div>
+<p>Компания А, Компания Б, Компания В, Компания Г, Компания Д, Компания Е, Компания Ж…</p></div>
+</div>
+</div>

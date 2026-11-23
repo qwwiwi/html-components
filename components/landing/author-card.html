@@ -1,0 +1,53 @@
+<!--
+  component: landing-author-card
+  category: landing
+  title_ru: Карточка автора
+  use_for: Секция «Кто ведёт проект» на лендинге или слайд-представление; фото можно поставить вместо монограммы.
+  data_slots: инициалы или фото, имя, должность и компания, описание, две ссылки, сноска «демо-данные»
+  source: 21st.dev #10392 «Team Member Card», автор Shatlyk1011
+  license: оригинал на 21st.dev: MIT (указана в заголовке кода); код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-landing-author-card (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-landing-author-card-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-landing-author-card-root,.hc-landing-author-card-root *{box-sizing:border-box}
+.hc-landing-author-card-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-landing-author-card-root *{min-width:0}
+.hc-landing-author-card-root svg{max-width:100%;height:auto}
+.hc-landing-author-card-root .mono{font-family:var(--mono)}
+.hc-landing-author-card-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-landing-author-card-root mark,.hc-landing-author-card-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-landing-author-card-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-landing-author-card-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-landing-author-card-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-landing-author-card-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-landing-author-card-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-landing-author-card-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-landing-author-card-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-landing-author-card-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-landing-author-card-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-landing-author-card-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-landing-author-card-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-landing-author-card-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-landing-author-card-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-landing-author-card{display:grid;grid-template-columns:auto minmax(0,1fr);gap:22px;align-items:start;border:1px solid var(--line);border-radius:22px;background:var(--paper);padding:clamp(18px,3vw,32px);box-shadow:0 14px 40px rgba(10,10,10,.06);max-width:760px}
+.hc-landing-author-card .ph{width:clamp(84px,14vw,132px);aspect-ratio:1;border-radius:26px;background:var(--ink);color:var(--lime);display:grid;place-items:center;font-size:clamp(40px,7vw,64px);font-weight:800;position:relative}
+.hc-landing-author-card .ph small{position:absolute;left:8px;right:8px;bottom:6px;font:500 8.5px/1.2 var(--mono);color:#C9C7B8;text-align:center;text-transform:uppercase;letter-spacing:.04em}
+.hc-landing-author-card h3{margin:4px 0 2px;font-size:clamp(24px,3.4vw,34px);letter-spacing:-.03em}
+.hc-landing-author-card .role{font-size:14px;color:var(--muted)}
+.hc-landing-author-card p{margin:14px 0;font-size:16px;line-height:1.5;color:var(--soft)}
+.hc-landing-author-card .lk{display:flex;gap:10px 16px;flex-wrap:wrap}
+@media(max-width:520px){.hc-landing-author-card{grid-template-columns:1fr}}
+</style>
+<div class="hc-landing-author-card-root">
+<div class="hc-landing-author-card">
+<div class="ph" role="img" aria-label="Аватар автора: инициалы ИФ">ИФ<small>демо-данные</small></div>
+<div><span class="tag">Автор проекта</span><h3>Имя Фамилия</h3><div class="role">Основатель · Компания А</div>
+<p>Строю цифровые продукты и делюсь опытом. Открыт к сотрудничеству с командами и специалистами.</p>
+<div class="lk"><span class="link">example.com</span><span class="link">example.com/contact</span></div></div></div>
+</div>

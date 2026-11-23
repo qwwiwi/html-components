@@ -1,0 +1,49 @@
+<!--
+  component: landing-audience-grid
+  category: landing
+  title_ru: Для кого сообщество – четыре карточки
+  use_for: Секция «Для кого» на лендинге сообщества или слайд презентации: четыре аудитории, у каждой – свой путь.
+  data_slots: названия четырёх аудиторий, буква в аватаре, описания, метки пути
+  source: 21st.dev #28619 «Team Member Cards», автор olewandowski1
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-landing-audience-grid (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-landing-audience-grid-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-landing-audience-grid-root,.hc-landing-audience-grid-root *{box-sizing:border-box}
+.hc-landing-audience-grid-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-landing-audience-grid-root *{min-width:0}
+.hc-landing-audience-grid-root svg{max-width:100%;height:auto}
+.hc-landing-audience-grid-root .mono{font-family:var(--mono)}
+.hc-landing-audience-grid-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-landing-audience-grid-root mark,.hc-landing-audience-grid-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-landing-audience-grid-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-landing-audience-grid-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-landing-audience-grid-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-landing-audience-grid-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-landing-audience-grid-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-landing-audience-grid-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-landing-audience-grid-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-landing-audience-grid-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-landing-audience-grid-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-landing-audience-grid-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-landing-audience-grid-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-landing-audience-grid-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-landing-audience-grid-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-landing-audience-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px}
+.hc-landing-audience-grid .a{border:1px solid var(--line);border-radius:20px;background:var(--paper);padding:20px;display:flex;flex-direction:column;gap:12px;box-shadow:0 14px 40px rgba(10,10,10,.05)}
+.hc-landing-audience-grid .a .av{width:52px;height:52px;border-radius:16px;background:var(--sand);display:grid;place-items:center;font-weight:800;font-size:22px;border:1px solid var(--line)}
+.hc-landing-audience-grid .a h3{margin:0;font-size:20px;letter-spacing:-.02em}
+.hc-landing-audience-grid .a p{margin:0;font-size:14px;line-height:1.45;color:var(--soft);flex:1}
+.hc-landing-audience-grid .a.hot{background:var(--dark);border-color:var(--dark);color:var(--bg)}
+.hc-landing-audience-grid .a.hot p{color:#D9D7CA}
+.hc-landing-audience-grid .a.hot .av{background:var(--lime);color:var(--ink);border-color:var(--lime)}
+</style>
+<div class="hc-landing-audience-grid-root">
+<div class="hc-landing-audience-grid"><div class="a"><div class="av" aria-hidden="true">С</div><h3>Специалист</h3><p>Бухгалтер, финансист, маркетолог. Своя экспертиза плюс агенты – готовая основа для сервиса.</p><span class="tag line" style="align-self:flex-start">Путь 1</span></div><div class="a"><div class="av" aria-hidden="true">П</div><h3>Предприниматель</h3><p>Строите такие системы внутри своей компании: оркестрация агентов, свои сервисы на платформе агентов.</p><span class="tag line" style="align-self:flex-start">Путь 3</span></div><div class="a"><div class="av" aria-hidden="true">И</div><h3>Ищете себя</h3><p>Нет своей экспертизы – найдите партнёра, у которого она есть, и делайте сервис вместе.</p><span class="tag line" style="align-self:flex-start">Путь 1</span></div><div class="a hot"><div class="av" aria-hidden="true">Р</div><h3>Разработчик</h3><p>Владеете инструментами автоматизации – подключайтесь к проектам и помогайте развивать продукты.</p><span class="tag " style="align-self:flex-start">Путь 2</span></div></div>
+</div>
