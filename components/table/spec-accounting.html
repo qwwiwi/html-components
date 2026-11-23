@@ -1,0 +1,72 @@
+<!--
+  component: table-spec-accounting
+  category: table
+  title_ru: Спецификация – бухгалтерия, четыре варианта
+  use_for: Слайд или раздел отчёта со сравнением одной услуги четырьмя способами рядом; рынки помечены в шапке, валюты не пересчитываются.
+  data_slots: заголовок, четыре колонки (метка рынка, название, пояснение), четыре строки признаков, значения ячеек, сноска
+  source: 21st.dev #39793 «Spec Sheet», автор isaiahbjork
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-table-spec-accounting (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-table-spec-accounting-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-table-spec-accounting-root,.hc-table-spec-accounting-root *{box-sizing:border-box}
+.hc-table-spec-accounting-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-table-spec-accounting-root *{min-width:0}
+.hc-table-spec-accounting-root svg{max-width:100%;height:auto}
+.hc-table-spec-accounting-root .mono{font-family:var(--mono)}
+.hc-table-spec-accounting-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-table-spec-accounting-root mark,.hc-table-spec-accounting-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-table-spec-accounting-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-table-spec-accounting-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-table-spec-accounting-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-table-spec-accounting-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-table-spec-accounting-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-table-spec-accounting-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-table-spec-accounting-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-table-spec-accounting-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-table-spec-accounting-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-table-spec-accounting-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-table-spec-accounting-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-table-spec-accounting-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-table-spec-accounting-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-table-spec-accounting{max-width:1100px;margin:0 auto}
+.hc-table-spec-accounting .sh{border:1px solid var(--line);border-radius:18px;background:var(--paper);overflow:hidden;box-shadow:0 14px 40px rgba(10,10,10,.06)}
+.hc-table-spec-accounting .tt{padding:20px 20px 4px}
+.hc-table-spec-accounting .tt .h3{margin-top:6px}
+.hc-table-spec-accounting .r{display:grid;grid-template-columns:168px repeat(4,minmax(0,1fr));border-top:1px solid var(--line)}
+.hc-table-spec-accounting .r>div{padding:14px 16px;font-size:14px;line-height:1.35;overflow-wrap:anywhere;color:var(--soft)}
+.hc-table-spec-accounting .r.h{border-top:0;margin-top:10px}
+.hc-table-spec-accounting .r.h>div{display:flex;flex-direction:column;gap:6px;align-items:flex-start;padding-top:12px}
+.hc-table-spec-accounting .r.h b{font-size:17px;letter-spacing:-.02em;color:var(--ink);line-height:1.15}
+.hc-table-spec-accounting .r.h em{font:500 12px/1.3 var(--mono);font-style:normal;color:var(--muted)}
+.hc-table-spec-accounting .tag{font-size:10px;padding:5px 8px}
+.hc-table-spec-accounting .r>.rl{font:600 11px/1.3 var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--muted);display:flex;align-items:center}
+.hc-table-spec-accounting .hy{background:#F3F1E6}
+.hc-table-spec-accounting .c.hy{color:var(--ink);font-weight:600}
+.hc-table-spec-accounting .ft{padding:12px 20px;border-top:1px solid var(--line);font:500 12px/1.4 var(--mono);color:var(--muted)}
+@media(max-width:900px){
+.hc-table-spec-accounting .r.h{display:none}
+.hc-table-spec-accounting .sh{border:0;background:transparent;box-shadow:none;border-radius:0}
+.hc-table-spec-accounting .tt{padding:0 0 12px}
+.hc-table-spec-accounting .sh .grid{display:grid;gap:12px}
+.hc-table-spec-accounting .r{display:block;border:1px solid var(--line);border-radius:16px;background:var(--paper);overflow:hidden}
+.hc-table-spec-accounting .r>div{padding:10px 16px}
+.hc-table-spec-accounting .rl{background:var(--sand);padding:10px 16px}
+.hc-table-spec-accounting .c::before{content:attr(data-label);display:block;font:600 11px/1.3 var(--mono);text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:2px}
+.hc-table-spec-accounting .c.hy::before{color:var(--ink)}
+.hc-table-spec-accounting .ft{padding:12px 0 0;border:0}
+}
+</style>
+<div class="hc-table-spec-accounting-root">
+<div class="hc-table-spec-accounting"><div class="sh">
+<div class="tt"><span class="eyebrow">Спецификация</span><div class="h3">Бухгалтерия: <mark>четыре варианта</mark></div></div>
+<div class="grid"><div class="r h"><div></div><div class=""><span class="tag line">США · пример данных</span><b>Софт</b><em>бухгалтерская программа</em></div><div class=""><span class="tag line">США · пример данных</span><b>Штатный бухгалтер</b><em>в штате</em></div><div class=""><span class="tag line">Россия · обычный диапазон</span><b>Аутсорс</b><em>бухгалтерская фирма</em></div><div class="hy"><span class="tag">гипотеза</span><b>AI-сервис</b><em>агенты + человек</em></div></div><div class="r"><div class="rl">Кто делает</div><div class="c" data-label="Софт · США">вы сами, в программе</div><div class="c" data-label="Штатный бухгалтер · США">сотрудник</div><div class="c" data-label="Аутсорс · Россия">внешняя фирма</div><div class="c hy" data-label="AI-сервис · гипотеза">агенты делают, человек-бухгалтер подписывает</div></div><div class="r"><div class="rl">Что платите</div><div class="c" data-label="Софт · США">$10&nbsp;тыс. в год</div><div class="c" data-label="Штатный бухгалтер · США">$120&nbsp;тыс. в год</div><div class="c" data-label="Аутсорс · Россия">6&nbsp;000–14&nbsp;000&nbsp;₽ в месяц, обычно</div><div class="c hy" data-label="AI-сервис · гипотеза">цена за результат – суммы пока нет</div></div><div class="r"><div class="rl">За что</div><div class="c" data-label="Софт · США">за программу</div><div class="c" data-label="Штатный бухгалтер · США">за работу человека в штате</div><div class="c" data-label="Аутсорс · Россия">за ведение учёта в месяц</div><div class="c hy" data-label="AI-сервис · гипотеза">за результат: закрытый месяц, декларация</div></div><div class="r"><div class="rl">Ответственность</div><div class="c" data-label="Софт · США">на вас</div><div class="c" data-label="Штатный бухгалтер · США">на сотруднике и компании</div><div class="c" data-label="Аутсорс · Россия">зависит от договора с фирмой</div><div class="c hy" data-label="AI-сервис · гипотеза">на человеке-бухгалтере, который подписывает</div></div></div>
+<div class="ft">США и Россия – разные рынки; валюты не пересчитываем. Правая колонка – гипотеза, не прайс.</div>
+</div></div>
+</div>

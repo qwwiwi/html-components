@@ -1,0 +1,68 @@
+<!--
+  component: table-niches-ru
+  category: table
+  title_ru: CRM-таблица – восемь ниш для России
+  use_for: Слайд или раздел отчёта со списком ниш: восемь строк с результатом и гипотезой единицы цены; чипы – тип единицы. На телефоне строки собираются в карточки.
+  data_slots: надзаголовок и метка, восемь строк (номер, ниша, результат, чип и единица цены), примечание внизу
+  source: 21st.dev #23604 «Records Table», автор theshanelevine
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-table-niches-ru (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-table-niches-ru-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-table-niches-ru-root,.hc-table-niches-ru-root *{box-sizing:border-box}
+.hc-table-niches-ru-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-table-niches-ru-root *{min-width:0}
+.hc-table-niches-ru-root svg{max-width:100%;height:auto}
+.hc-table-niches-ru-root .mono{font-family:var(--mono)}
+.hc-table-niches-ru-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-table-niches-ru-root mark,.hc-table-niches-ru-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-table-niches-ru-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-table-niches-ru-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-table-niches-ru-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-table-niches-ru-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-table-niches-ru-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-table-niches-ru-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-table-niches-ru-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-table-niches-ru-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-table-niches-ru-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-table-niches-ru-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-table-niches-ru-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-table-niches-ru-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-table-niches-ru-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-table-niches-ru{max-width:1080px;margin:0 auto}
+.hc-table-niches-ru .tb{border:1px solid var(--line);border-radius:18px;background:var(--paper);overflow:hidden;box-shadow:0 14px 40px rgba(10,10,10,.06)}
+.hc-table-niches-ru .hd{display:flex;flex-wrap:wrap;gap:8px 12px;justify-content:space-between;align-items:center;padding:16px 20px}
+.hc-table-niches-ru .r{display:grid;grid-template-columns:48px minmax(150px,1fr) minmax(0,1.6fr) minmax(0,1.3fr);gap:0 12px;align-items:center;padding:12px 20px;border-top:1px solid var(--line);font-size:14px;line-height:1.35}
+.hc-table-niches-ru .r.h{background:var(--sand);padding-top:9px;padding-bottom:9px;font:600 11px/1.3 var(--mono);text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.hc-table-niches-ru .n{color:var(--muted);font-size:13px}
+.hc-table-niches-ru .ni b{font-size:15px;letter-spacing:-.01em}
+.hc-table-niches-ru .rs{color:var(--soft)}
+.hc-table-niches-ru .un{display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.hc-table-niches-ru .un i{font-style:normal;font-size:13px;color:var(--soft)}
+.hc-table-niches-ru .tag{font-size:10.5px;padding:5px 9px}
+.hc-table-niches-ru .ft{padding:12px 20px;border-top:1px solid var(--line);font:500 12px/1.4 var(--mono);color:var(--muted)}
+.hc-table-niches-ru .ft mark{font-weight:600}
+@media(max-width:760px){
+.hc-table-niches-ru .r.h{display:none}
+.hc-table-niches-ru .r{display:block;padding:14px 16px;position:relative}
+.hc-table-niches-ru .n{position:absolute;right:16px;top:14px}
+.hc-table-niches-ru .ni b{font-size:16px}
+.hc-table-niches-ru .rs,.hc-table-niches-ru .un{margin-top:6px}
+.hc-table-niches-ru .rs::before,.hc-table-niches-ru .un::before{content:attr(data-label);display:block;font:600 11px/1.3 var(--mono);text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:2px}
+.hc-table-niches-ru .hd,.hc-table-niches-ru .ft{padding-left:16px;padding-right:16px}
+}
+</style>
+<div class="hc-table-niches-ru-root">
+<div class="hc-table-niches-ru"><div class="tb">
+<div class="hd"><span class="eyebrow">8 из 15 ниш для России</span><span class="tag line">гипотезы для пилота</span></div>
+<div class="r h"><div>№</div><div>Ниша</div><div>Что продаём (результат)</div><div>Единица цены (гипотеза)</div></div>
+<div class="r"><div class="n mono" data-label="№">01</div><div class="ni" data-label="Ниша"><b>Входящие заявки</b></div><div class="rs" data-label="Что продаём (результат)">ответ за минуты, квалификация, запись, карточка в CRM</div><div class="un" data-label="Единица цены (гипотеза)"><span class="tag line">за заявку</span><i>за заявку или записанную встречу</i></div></div><div class="r"><div class="n mono" data-label="№">02</div><div class="ni" data-label="Ниша"><b>Банкеты и рестораны</b></div><div class="rs" data-label="Что продаём (результат)">банкет доведён до брони</div><div class="un" data-label="Единица цены (гипотеза)"><span class="tag line">процент</span><i>процент с банкета</i></div></div><div class="r"><div class="n mono" data-label="№">03</div><div class="ni" data-label="Ниша"><b>Риелторы и брокеры</b></div><div class="rs" data-label="Что продаём (результат)">сделка сопровождена</div><div class="un" data-label="Единица цены (гипотеза)"><span class="tag line">за сделку</span><i>за сделку</i></div></div><div class="r"><div class="n mono" data-label="№">04</div><div class="ni" data-label="Ниша"><b>Бухгалтерия для селлеров</b></div><div class="rs" data-label="Что продаём (результат)">месяц закрыт (маркетплейсы)</div><div class="un" data-label="Единица цены (гипотеза)"><span class="tag line">в месяц</span><i>в месяц за кабинет</i></div></div><div class="r"><div class="n mono" data-label="№">05</div><div class="ni" data-label="Ниша"><b>Госзакупки</b></div><div class="rs" data-label="Что продаём (результат)">заявка подготовлена и подана</div><div class="un" data-label="Единица цены (гипотеза)"><span class="tag line">за заявку</span><i>за поданную заявку</i></div></div><div class="r"><div class="n mono" data-label="№">07</div><div class="ni" data-label="Ниша"><b>Юридическая подписка</b></div><div class="rs" data-label="Что продаём (результат)">договоры в срок, юрист проверил</div><div class="un" data-label="Единица цены (гипотеза)"><span class="tag line">за документ</span><i>за документ в пакете</i></div></div><div class="r"><div class="n mono" data-label="№">13</div><div class="ni" data-label="Ниша"><b>Налоговая декларация 3-НДФЛ</b></div><div class="rs" data-label="Что продаём (результат)">декларация подготовлена</div><div class="un" data-label="Единица цены (гипотеза)"><span class="tag line">за документ</span><i>за декларацию</i></div></div><div class="r"><div class="n mono" data-label="№">15</div><div class="ni" data-label="Ниша"><b>Логистические документы</b></div><div class="rs" data-label="Что продаём (результат)">комплект документов на рейс</div><div class="un" data-label="Единица цены (гипотеза)"><span class="tag line">за документ</span><i>за комплект на рейс</i></div></div>
+<div class="ft"><mark>единицы цены – гипотезы для пилота, не прайс</mark></div>
+</div></div>
+</div>
