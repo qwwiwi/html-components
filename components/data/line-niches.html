@@ -1,0 +1,50 @@
+<!--
+  component: data-line-niches
+  category: data
+  title_ru: Line chart – ниши нарастающим итогом
+  use_for: Слайд или раздел отчёта, где три ниши сравниваются на одной шкале нарастающим итогом, и видно, где и когда пришли деньги.
+  data_slots: заголовок, названия трёх ниш в подписях и легенде, значения по месяцам (точки линий), конечные числа, сноска
+  source: 21st.dev #35057 «Line Chart», автор kuratlielia
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-data-line-niches (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-data-line-niches-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-data-line-niches-root,.hc-data-line-niches-root *{box-sizing:border-box}
+.hc-data-line-niches-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-data-line-niches-root *{min-width:0}
+.hc-data-line-niches-root svg{max-width:100%;height:auto}
+.hc-data-line-niches-root .mono{font-family:var(--mono)}
+.hc-data-line-niches-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-data-line-niches-root mark,.hc-data-line-niches-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-data-line-niches-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-data-line-niches-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-data-line-niches-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-data-line-niches-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-data-line-niches-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-data-line-niches-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-data-line-niches-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-data-line-niches-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-data-line-niches-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-data-line-niches-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-data-line-niches-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-data-line-niches-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-data-line-niches-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-data-line-niches .card.pl{padding:clamp(16px,3vw,28px)}
+.hc-data-line-niches .hd{display:grid;gap:6px;margin-bottom:18px}
+.hc-data-line-niches .hd .h3{margin:0}
+.hc-data-line-niches .leg{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px;font-size:13px;color:var(--soft)}
+.hc-data-line-niches .leg span{display:inline-flex;align-items:center;gap:7px}
+.hc-data-line-niches .leg i{display:inline-block;width:14px;height:8px;border-radius:2px;flex:none}
+.hc-data-line-niches .foot{margin-top:14px;font:500 11px/1.5 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);overflow-wrap:anywhere}
+.hc-data-line-niches svg text{font-family:var(--sans)}
+.hc-data-line-niches .svg{display:block;width:100%;height:auto;max-width:680px;margin:0 auto}
+</style>
+<div class="hc-data-line-niches-root">
+<div class="hc-data-line-niches"><div class="card pl"><div class="hd"><div class="eyebrow">Раунды по нишам · пример данных, $&nbsp;млн</div><div class="h3">Ниша Б обошла нишу А за один <mark>май</mark></div></div><svg class="svg" viewBox="0 0 400 250" role="img" aria-label="Линейный график: раунды нарастающим итогом по нишам, февраль – июль, пример данных" xmlns="http://www.w3.org/2000/svg"><line x1="36" x2="286" y1="200.0" y2="200.0" stroke="#8A8D7E" stroke-width="1" /><text x="30.0" y="204.0" font-size="11" fill="#5C6053" text-anchor="end" font-weight="500" >0</text><line x1="36" x2="286" y1="143.3" y2="143.3" stroke="#D8D7C9" stroke-width="1" /><text x="30.0" y="147.3" font-size="11" fill="#5C6053" text-anchor="end" font-weight="500" >100</text><line x1="36" x2="286" y1="86.7" y2="86.7" stroke="#D8D7C9" stroke-width="1" /><text x="30.0" y="90.7" font-size="11" fill="#5C6053" text-anchor="end" font-weight="500" >200</text><line x1="36" x2="286" y1="30.0" y2="30.0" stroke="#D8D7C9" stroke-width="1" /><text x="30.0" y="34.0" font-size="11" fill="#5C6053" text-anchor="end" font-weight="500" >300</text><text x="36.0" y="222.0" font-size="12" fill="#5C6053" text-anchor="middle" font-weight="500" >фев</text><text x="86.0" y="222.0" font-size="12" fill="#5C6053" text-anchor="middle" font-weight="500" >мар</text><text x="136.0" y="222.0" font-size="12" fill="#5C6053" text-anchor="middle" font-weight="500" >апр</text><text x="186.0" y="222.0" font-size="12" fill="#5C6053" text-anchor="middle" font-weight="500" >май</text><text x="236.0" y="222.0" font-size="12" fill="#5C6053" text-anchor="middle" font-weight="500" >июн</text><text x="286.0" y="222.0" font-size="12" fill="#5C6053" text-anchor="middle" font-weight="500" >июл</text><polyline points="36.0,200.0 86.0,200.0 136.0,200.0 186.0,38.5 236.0,38.5 286.0,38.5" fill="none" stroke="#8A8D7E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="286.0" cy="38.5" r="3.5" fill="#8A8D7E"><title>Ниша Б: $285 млн</title></circle><text x="296.0" y="42.5" font-size="12" fill="#24251E" text-anchor="start" font-weight="700" >Ниша&nbsp;Б&nbsp;285</text><polyline points="36.0,166.0 86.0,132.0 136.0,132.0 186.0,132.0 236.0,132.0 286.0,64.0" fill="none" stroke="#24251E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="286.0" cy="64.0" r="3.5" fill="#24251E"><title>Ниша&nbsp;А: $240 млн</title></circle><text x="296.0" y="68.0" font-size="12" fill="#24251E" text-anchor="start" font-weight="700" >Ниша&nbsp;А&nbsp;240</text><polyline points="36.0,200.0 86.0,200.0 136.0,151.8 186.0,151.8 236.0,151.8 286.0,151.8" fill="none" stroke="#24251E" stroke-width="1.8" stroke-dasharray="5 4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="286.0" cy="151.8" r="3.5" fill="#24251E"><title>Ниша В: $85 млн</title></circle><text x="296.0" y="155.8" font-size="12" fill="#24251E" text-anchor="start" font-weight="700" >Ниша&nbsp;В&nbsp;85</text><text x="30.0" y="16.0" font-size="11" fill="#5C6053" text-anchor="end" font-weight="500" >$&nbsp;млн</text></svg><div class="leg"><span><svg width="26" height="8" aria-hidden="true"><line x1="0" y1="4" x2="26" y2="4" stroke="#24251E" stroke-width="2"/></svg>ниша А – сплошная тёмная, 240</span><span><svg width="26" height="8" aria-hidden="true"><line x1="0" y1="4" x2="26" y2="4" stroke="#8A8D7E" stroke-width="2"/></svg>ниша Б – серая, 285</span><span><svg width="26" height="8" aria-hidden="true"><line x1="0" y1="4" x2="26" y2="4" stroke="#24251E" stroke-width="1.8" stroke-dasharray="5 4"/></svg>ниша В – пунктир, 85</span></div><div class="foot">Пример данных: шесть раундов, не весь рынок</div></div></div>
+</div>

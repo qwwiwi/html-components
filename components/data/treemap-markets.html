@@ -1,0 +1,86 @@
+<!--
+  component: data-treemap-markets
+  category: data
+  title_ru: Treemap – рынки по нижней оценке
+  use_for: Слайд или раздел отчёта, где масштаб нескольких рынков сравнивается через площадь; дополняет диапазонные столбики тем же набором данных.
+  data_slots: заголовок, названия рынков, диапазоны оценок, размеры плиток (CSS), легенда, тег и сноска
+  source: 21st.dev #29475 «Treemap», автор eugeneshilow
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-data-treemap-markets (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-data-treemap-markets-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-data-treemap-markets-root,.hc-data-treemap-markets-root *{box-sizing:border-box}
+.hc-data-treemap-markets-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-data-treemap-markets-root *{min-width:0}
+.hc-data-treemap-markets-root svg{max-width:100%;height:auto}
+.hc-data-treemap-markets-root .mono{font-family:var(--mono)}
+.hc-data-treemap-markets-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-data-treemap-markets-root mark,.hc-data-treemap-markets-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-data-treemap-markets-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-data-treemap-markets-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-data-treemap-markets-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-data-treemap-markets-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-data-treemap-markets-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-data-treemap-markets-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-data-treemap-markets-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-data-treemap-markets-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-data-treemap-markets-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-data-treemap-markets-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-data-treemap-markets-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-data-treemap-markets-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-data-treemap-markets-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-data-treemap-markets .card.pl{padding:clamp(16px,3vw,28px)}
+.hc-data-treemap-markets .hd{display:grid;gap:6px;margin-bottom:18px}
+.hc-data-treemap-markets .hd .h3{margin:0}
+.hc-data-treemap-markets .leg{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px;font-size:13px;color:var(--soft)}
+.hc-data-treemap-markets .leg span{display:inline-flex;align-items:center;gap:7px}
+.hc-data-treemap-markets .leg i{display:inline-block;width:14px;height:8px;border-radius:2px;flex:none}
+.hc-data-treemap-markets .foot{margin-top:14px;font:500 11px/1.5 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);overflow-wrap:anywhere}
+.hc-data-treemap-markets svg text{font-family:var(--sans)}
+.hc-data-treemap-markets .svg{display:block;width:100%;height:auto;max-width:680px;margin:0 auto}
+.hc-data-treemap-markets .tl.t0{left:0.000%;top:0.000%;width:40.541%;height:100.000%}
+.hc-data-treemap-markets .tl.t1{left:40.541%;top:0.000%;width:34.976%;height:77.273%}
+.hc-data-treemap-markets .tl.t2{left:75.517%;top:0.000%;width:24.483%;height:77.273%}
+.hc-data-treemap-markets .tl.t3{left:40.541%;top:77.273%;width:29.730%;height:22.727%}
+.hc-data-treemap-markets .tl.t4{left:70.270%;top:77.273%;width:29.730%;height:13.636%}
+.hc-data-treemap-markets .tl.t5{left:70.270%;top:90.909%;width:29.730%;height:9.091%}
+
+.hc-data-treemap-markets .wrap{display:flex;flex-wrap:wrap;gap:20px 32px;align-items:flex-start}
+.hc-data-treemap-markets .tm{container-type:inline-size;position:relative;flex:1 1 360px;width:100%;max-width:680px;aspect-ratio:3/2;margin:-2px}
+.hc-data-treemap-markets .tl{position:absolute;border:2px solid var(--paper);border-radius:10px;padding:8px 10px;overflow:hidden;display:flex;flex-direction:column;gap:3px;line-height:1.12}
+.hc-data-treemap-markets .tl b{font-size:14px;letter-spacing:-.01em;overflow-wrap:normal;hyphens:manual}
+.hc-data-treemap-markets .tl .rg{font-size:11px;font-weight:600}
+.hc-data-treemap-markets .t0{background:var(--ink);color:var(--bg)}
+.hc-data-treemap-markets .t1{background:var(--sand2);color:var(--ink)}
+.hc-data-treemap-markets .t2{background:#DAD8C9;color:var(--ink)}
+.hc-data-treemap-markets .t3,.hc-data-treemap-markets .t4,.hc-data-treemap-markets .t5{background:var(--sand);color:var(--ink)}
+.hc-data-treemap-markets .t0 b{font-size:min(20px,4.6cqw)}
+.hc-data-treemap-markets .t1 b,.hc-data-treemap-markets .t2 b{font-size:min(16px,3.8cqw)}
+.hc-data-treemap-markets .t4,.hc-data-treemap-markets .t5{padding:5px 8px}
+.hc-data-treemap-markets .t4 b,.hc-data-treemap-markets .t5 b{font-size:min(12px,3.4cqw)}
+.hc-data-treemap-markets .side{flex:1 1 220px;display:grid;gap:2px;align-content:start}
+.hc-data-treemap-markets .lr2{display:grid;grid-template-columns:14px 1fr auto;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px}
+.hc-data-treemap-markets .sw{display:block;width:14px;height:14px;border-radius:3px;border:1px solid var(--sand2)}
+.hc-data-treemap-markets .sw.t0{background:var(--ink);border-color:var(--ink)}
+.hc-data-treemap-markets .lr2 .cn{font-weight:600}
+.hc-data-treemap-markets .lr2 .rr{font-size:12px;font-weight:600;color:var(--soft)}
+@media (max-width:520px){
+.hc-data-treemap-markets .tm{aspect-ratio:2/3;flex-basis:100%}
+.hc-data-treemap-markets .tl.t1{left:40.541%;top:0;width:59.459%;height:45.455%}
+.hc-data-treemap-markets .tl.t2{left:40.541%;top:45.455%;width:59.459%;height:31.818%}
+
+.hc-data-treemap-markets .t4,.hc-data-treemap-markets .t5{padding:3px 6px}
+.hc-data-treemap-markets .t4 .rg,.hc-data-treemap-markets .t5 .rg,.hc-data-treemap-markets .t3 .rg{display:none}
+.hc-data-treemap-markets .t4 b,.hc-data-treemap-markets .t5 b,.hc-data-treemap-markets .t3 b{font-size:min(10.5px,3cqw);letter-spacing:-.02em}
+.hc-data-treemap-markets .t0 b{font-size:min(17px,4.6cqw)}
+}
+</style>
+<div class="hc-data-treemap-markets-root">
+<div class="hc-data-treemap-markets"><div class="card pl"><div class="hd"><div class="eyebrow">Карта рынков труда США · площадь ∝ нижней границе оценки</div><div class="h3">Консалтинг и закупки занимают <mark>две трети карты</mark></div></div><div class="wrap"><div class="tm" role="img" aria-label="Древовидная карта рынков труда США: площадь пропорциональна нижней границе оценки, пример данных"><div class="tl t0" title="консалтинг: 300–400 млрд $"><b>консалтинг</b><span class="mono rg">300–400</span></div><div class="tl t1" title="закупки: 200+ млрд $"><b>закупки</b><span class="mono rg">200+</span></div><div class="tl t2" title="страховой брокеридж: 140–200 млрд $"><b>брокеридж</b><span class="mono rg">140–200</span></div><div class="tl t3" title="бухучёт: 50–80 млрд $"><b>бухучёт</b><span class="mono rg">50–80</span></div><div class="tl t4" title="налоговые: 30–35 млрд $"><b>налоговые</b><span class="mono rg">30–35</span></div><div class="tl t5" title="юр. транзакционная: 20–25 млрд $"><b>юристы</b><span class="mono rg">20–25</span></div></div><div class="side"><div class="lr2"><i class="sw t0"></i><span class="cn">консалтинг</span><span class="mono rr">300–400&nbsp;млрд&nbsp;$</span></div><div class="lr2"><i class="sw t1"></i><span class="cn">закупки</span><span class="mono rr">200+&nbsp;млрд&nbsp;$</span></div><div class="lr2"><i class="sw t2"></i><span class="cn">страховой брокеридж</span><span class="mono rr">140–200&nbsp;млрд&nbsp;$</span></div><div class="lr2"><i class="sw t3"></i><span class="cn">бухучёт</span><span class="mono rr">50–80&nbsp;млрд&nbsp;$</span></div><div class="lr2"><i class="sw t4"></i><span class="cn">налоговые</span><span class="mono rr">30–35&nbsp;млрд&nbsp;$</span></div><div class="lr2"><i class="sw t5"></i><span class="cn">юр. транзакционная</span><span class="mono rr">20–25&nbsp;млрд&nbsp;$</span></div><div style="margin-top:10px"><span class="tag">пример данных, не статистика</span></div></div></div><div class="foot">Площадь – нижняя граница оценки; полный диапазон указан в легенде</div></div></div>
+</div>

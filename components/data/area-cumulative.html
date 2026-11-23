@@ -1,0 +1,50 @@
+<!--
+  component: data-area-cumulative
+  category: data
+  title_ru: Area chart – накопительный итог по месяцам
+  use_for: Слайд или раздел отчёта, где одним графиком нужно показать, как за полгода накопилась сумма по нескольким раундам финансирования; подходит для любой накопительной метрики по месяцам.
+  data_slots: заголовок, подпись-eyebrow, значения по месяцам (точки и подписи оси), итоговое число, легенда, сноска
+  source: 21st.dev #30139 «Area Chart», автор retroui
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-data-area-cumulative (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-data-area-cumulative-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-data-area-cumulative-root,.hc-data-area-cumulative-root *{box-sizing:border-box}
+.hc-data-area-cumulative-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-data-area-cumulative-root *{min-width:0}
+.hc-data-area-cumulative-root svg{max-width:100%;height:auto}
+.hc-data-area-cumulative-root .mono{font-family:var(--mono)}
+.hc-data-area-cumulative-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-data-area-cumulative-root mark,.hc-data-area-cumulative-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-data-area-cumulative-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-data-area-cumulative-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-data-area-cumulative-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-data-area-cumulative-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-data-area-cumulative-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-data-area-cumulative-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-data-area-cumulative-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-data-area-cumulative-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-data-area-cumulative-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-data-area-cumulative-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-data-area-cumulative-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-data-area-cumulative-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-data-area-cumulative-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-data-area-cumulative .card.pl{padding:clamp(16px,3vw,28px)}
+.hc-data-area-cumulative .hd{display:grid;gap:6px;margin-bottom:18px}
+.hc-data-area-cumulative .hd .h3{margin:0}
+.hc-data-area-cumulative .leg{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px;font-size:13px;color:var(--soft)}
+.hc-data-area-cumulative .leg span{display:inline-flex;align-items:center;gap:7px}
+.hc-data-area-cumulative .leg i{display:inline-block;width:14px;height:8px;border-radius:2px;flex:none}
+.hc-data-area-cumulative .foot{margin-top:14px;font:500 11px/1.5 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);overflow-wrap:anywhere}
+.hc-data-area-cumulative svg text{font-family:var(--sans)}
+.hc-data-area-cumulative .svg{display:block;width:100%;height:auto;max-width:680px;margin:0 auto}
+</style>
+<div class="hc-data-area-cumulative-root">
+<div class="hc-data-area-cumulative"><div class="card pl"><div class="hd"><div class="eyebrow">Раунды финансирования · пример данных, $&nbsp;млн</div><div class="h3">К июлю шесть раундов дали <mark>$610&nbsp;млн</mark></div></div><svg class="svg" viewBox="0 0 400 250" role="img" aria-label="Площадной график: раунды финансирования нарастающим итогом с февраля по июль, итого 610 млн долларов, пример данных" xmlns="http://www.w3.org/2000/svg"><line x1="40" x2="372" y1="200.0" y2="200.0" stroke="#8A8D7E" stroke-width="1" /><text x="34.0" y="204.0" font-size="11" fill="#5C6053" text-anchor="end" font-weight="500" >0</text><line x1="40" x2="372" y1="152.0" y2="152.0" stroke="#D8D7C9" stroke-width="1" /><text x="34.0" y="156.0" font-size="11" fill="#5C6053" text-anchor="end" font-weight="500" >200</text><line x1="40" x2="372" y1="104.0" y2="104.0" stroke="#D8D7C9" stroke-width="1" /><text x="34.0" y="108.0" font-size="11" fill="#5C6053" text-anchor="end" font-weight="500" >400</text><line x1="40" x2="372" y1="56.0" y2="56.0" stroke="#D8D7C9" stroke-width="1" /><text x="34.0" y="60.0" font-size="11" fill="#5C6053" text-anchor="end" font-weight="500" >600</text><path d="M40.0,200 L40.0,185.6 L106.4,171.2 L172.8,150.8 L239.2,82.4 L305.6,82.4 L372.0,53.6 L372.0,200 Z" fill="#E9E7DA"/><polyline points="40.0,185.6 106.4,171.2 172.8,150.8 239.2,82.4 305.6,82.4 372.0,53.6" fill="none" stroke="#24251E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="40.0" cy="185.6" r="3.5" fill="#24251E" stroke="#24251E" stroke-width="1.5"><title>фев: $60 млн</title></circle><text x="40.0" y="222.0" font-size="12" fill="#5C6053" text-anchor="middle" font-weight="500" >фев</text><circle cx="106.4" cy="171.2" r="3.5" fill="#24251E" stroke="#24251E" stroke-width="1.5"><title>мар: $120 млн</title></circle><text x="106.4" y="222.0" font-size="12" fill="#5C6053" text-anchor="middle" font-weight="500" >мар</text><circle cx="172.8" cy="150.8" r="3.5" fill="#24251E" stroke="#24251E" stroke-width="1.5"><title>апр: $205 млн</title></circle><text x="172.8" y="222.0" font-size="12" fill="#5C6053" text-anchor="middle" font-weight="500" >апр</text><circle cx="239.2" cy="82.4" r="3.5" fill="#24251E" stroke="#24251E" stroke-width="1.5"><title>май: $490 млн</title></circle><text x="239.2" y="222.0" font-size="12" fill="#5C6053" text-anchor="middle" font-weight="500" >май</text><circle cx="305.6" cy="82.4" r="3.5" fill="#FFFEFA" stroke="#24251E" stroke-width="1.5"><title>июн: $490 млн</title></circle><text x="305.6" y="222.0" font-size="12" fill="#5C6053" text-anchor="middle" font-weight="500" >июн</text><circle cx="372.0" cy="53.6" r="6.5" fill="#D4FF00" stroke="#24251E" stroke-width="2"><title>июль: $610 млн</title></circle><text x="372.0" y="222.0" font-size="12" fill="#5C6053" text-anchor="middle" font-weight="500" >июл</text><text x="44.0" y="175.6" font-size="12" fill="#24251E" text-anchor="start" font-weight="700" >$60</text><text x="239.2" y="70.4" font-size="12" fill="#24251E" text-anchor="middle" font-weight="700" >$490</text><text x="372.0" y="39.6" font-size="14" fill="#24251E" text-anchor="end" font-weight="800" >$610&nbsp;млн</text><text x="34.0" y="18.0" font-size="11" fill="#5C6053" text-anchor="end" font-weight="500" >$&nbsp;млн</text></svg><div class="leg"><span><i style="background:var(--ink);height:2px"></i>нарастающий итог</span><span><i style="background:var(--paper);border:1.5px solid var(--ink);height:9px;width:9px;border-radius:50%"></i>июнь – раундов нет, линия ровная</span></div><div class="foot">Пример данных: шесть раундов, не весь рынок</div></div></div>
+</div>

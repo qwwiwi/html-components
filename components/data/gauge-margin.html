@@ -1,0 +1,51 @@
+<!--
+  component: data-gauge-margin
+  category: data
+  title_ru: Gauge – маржа 30% против 50%+
+  use_for: Слайд или раздел отчёта, где одним жестом нужно показать разрыв: обычная сервисная фирма упирается в 30% маржи, целевая метка – 50% и выше.
+  data_slots: заголовок, значение в центре, подпись под значением, подпись метки, концы шкалы, легенда, сноска
+  source: 21st.dev #1757 «Gauge», автор designali-in
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-data-gauge-margin (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-data-gauge-margin-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-data-gauge-margin-root,.hc-data-gauge-margin-root *{box-sizing:border-box}
+.hc-data-gauge-margin-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-data-gauge-margin-root *{min-width:0}
+.hc-data-gauge-margin-root svg{max-width:100%;height:auto}
+.hc-data-gauge-margin-root .mono{font-family:var(--mono)}
+.hc-data-gauge-margin-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-data-gauge-margin-root mark,.hc-data-gauge-margin-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-data-gauge-margin-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-data-gauge-margin-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-data-gauge-margin-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-data-gauge-margin-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-data-gauge-margin-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-data-gauge-margin-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-data-gauge-margin-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-data-gauge-margin-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-data-gauge-margin-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-data-gauge-margin-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-data-gauge-margin-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-data-gauge-margin-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-data-gauge-margin-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-data-gauge-margin .card.pl{padding:clamp(16px,3vw,28px)}
+.hc-data-gauge-margin .hd{display:grid;gap:6px;margin-bottom:18px}
+.hc-data-gauge-margin .hd .h3{margin:0}
+.hc-data-gauge-margin .leg{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px;font-size:13px;color:var(--soft)}
+.hc-data-gauge-margin .leg span{display:inline-flex;align-items:center;gap:7px}
+.hc-data-gauge-margin .leg i{display:inline-block;width:14px;height:8px;border-radius:2px;flex:none}
+.hc-data-gauge-margin .foot{margin-top:14px;font:500 11px/1.5 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);overflow-wrap:anywhere}
+.hc-data-gauge-margin svg text{font-family:var(--sans)}
+.hc-data-gauge-margin .svg{display:block;width:100%;height:auto;max-width:680px;margin:0 auto}
+.hc-data-gauge-margin .svg{max-width:460px}
+</style>
+<div class="hc-data-gauge-margin-root">
+<div class="hc-data-gauge-margin"><div class="card pl"><div class="hd"><div class="eyebrow">Маржа сервисной компании</div><div class="h3">От <mark>30%</mark> у обычных фирм до 50%+ по целевой метке</div></div><svg class="svg" viewBox="0 0 360 204" role="img" aria-label="Полукруговой индикатор: маржа обычной сервисной фирмы около 30 процентов, целевая метка 50 процентов и выше, пример данных" xmlns="http://www.w3.org/2000/svg"><path d="M62.00,170.00 A118,118 0 0 1 298.00,170.00" fill="none" stroke="#E9E7DA" stroke-width="18" stroke-linecap="round"/><path d="M62.00,170.00 A118,118 0 0 1 110.64,74.54" fill="none" stroke="#24251E" stroke-width="18" stroke-linecap="round"><title>30%: обычная сервисная фирма</title></path><circle cx="110.6" cy="74.5" r="4" fill="#FFFEFA"/><line x1="180.0" y1="70.0" x2="180.0" y2="36.0" stroke="#24251E" stroke-width="7" stroke-linecap="round"/><line x1="180.0" y1="70.0" x2="180.0" y2="36.0" stroke="#D4FF00" stroke-width="3.5" stroke-linecap="round"><title>50%+: целевая метка</title></line><text x="180.0" y="28.0" font-size="12" fill="#24251E" text-anchor="middle" font-weight="700" >50%+&nbsp;– целевая метка маржи</text><text x="180.0" y="148.0" font-size="46" fill="#24251E" text-anchor="middle" font-weight="800" >30%</text><text x="180.0" y="168.0" font-size="12" fill="#4F5147" text-anchor="middle" font-weight="500" >обычная сервисная фирма</text><text x="62.0" y="194.0" font-size="11" fill="#5C6053" text-anchor="middle" font-weight="600" >0%</text><text x="298.0" y="194.0" font-size="11" fill="#5C6053" text-anchor="middle" font-weight="600" >100%</text></svg><div class="leg" style="justify-content:center"><span><i style="background:var(--ink)"></i>около 30% – обычная сервисная фирма</span><span><i style="background:var(--lime);border:1px solid var(--ink);width:6px;height:12px"></i>50%+ – целевая метка маржи</span></div><div class="foot" style="text-align:center">Пример данных. Не прогноз и не гарантия</div></div></div>
+</div>

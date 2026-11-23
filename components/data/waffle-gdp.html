@@ -1,0 +1,59 @@
+<!--
+  component: data-waffle-gdp
+  category: data
+  title_ru: Waffle chart – 13% ВВП США
+  use_for: Слайд или раздел отчёта, где нужно показать долю «13 из 100» (например, доля отрасли в ВВП); квадратная сетка 10×10 читается без шкалы.
+  data_slots: заголовок, eyebrow, число закрашенных клеток, крупное число и пояснение, тег, сноска
+  source: 21st.dev #44652 «LED Dot Matrix Chart Card», автор kedhareswer
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-data-waffle-gdp (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-data-waffle-gdp-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-data-waffle-gdp-root,.hc-data-waffle-gdp-root *{box-sizing:border-box}
+.hc-data-waffle-gdp-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-data-waffle-gdp-root *{min-width:0}
+.hc-data-waffle-gdp-root svg{max-width:100%;height:auto}
+.hc-data-waffle-gdp-root .mono{font-family:var(--mono)}
+.hc-data-waffle-gdp-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-data-waffle-gdp-root mark,.hc-data-waffle-gdp-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-data-waffle-gdp-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-data-waffle-gdp-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-data-waffle-gdp-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-data-waffle-gdp-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-data-waffle-gdp-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-data-waffle-gdp-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-data-waffle-gdp-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-data-waffle-gdp-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-data-waffle-gdp-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-data-waffle-gdp-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-data-waffle-gdp-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-data-waffle-gdp-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-data-waffle-gdp-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-data-waffle-gdp .card.pl{padding:clamp(16px,3vw,28px)}
+.hc-data-waffle-gdp .hd{display:grid;gap:6px;margin-bottom:18px}
+.hc-data-waffle-gdp .hd .h3{margin:0}
+.hc-data-waffle-gdp .leg{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px;font-size:13px;color:var(--soft)}
+.hc-data-waffle-gdp .leg span{display:inline-flex;align-items:center;gap:7px}
+.hc-data-waffle-gdp .leg i{display:inline-block;width:14px;height:8px;border-radius:2px;flex:none}
+.hc-data-waffle-gdp .foot{margin-top:14px;font:500 11px/1.5 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);overflow-wrap:anywhere}
+.hc-data-waffle-gdp svg text{font-family:var(--sans)}
+.hc-data-waffle-gdp .svg{display:block;width:100%;height:auto;max-width:680px;margin:0 auto}
+
+.hc-data-waffle-gdp .wrap{display:flex;flex-wrap:wrap;gap:24px 40px;align-items:center}
+.hc-data-waffle-gdp .wf{display:grid;grid-template-columns:repeat(10,1fr);gap:clamp(3px,.9vw,6px);flex:0 1 340px;width:100%;max-width:340px;aspect-ratio:1/1;margin:0 auto}
+.hc-data-waffle-gdp .wf i{display:block;aspect-ratio:1;background:var(--sand);border:1px solid var(--sand2);border-radius:3px}
+.hc-data-waffle-gdp .wf i.f{background:var(--ink);border-color:var(--ink)}
+.hc-data-waffle-gdp .wf i.f.lm{background:var(--lime);border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.hc-data-waffle-gdp .tx{flex:1 1 220px;display:grid;gap:10px}
+.hc-data-waffle-gdp .big{font-size:clamp(56px,10vw,96px)}
+.hc-data-waffle-gdp .tx .p{margin:0}
+</style>
+<div class="hc-data-waffle-gdp-root">
+<div class="hc-data-waffle-gdp"><div class="card pl"><div class="hd"><div class="eyebrow">Пример данных · доля в экономике США</div><div class="h3">Профессиональные услуги – <mark>≈13% ВВП</mark></div></div><div class="wrap"><div class="wf" role="img" aria-label="Вафельная диаграмма 10 на 10: 13 клеток из 100 закрашены, около 13 процентов ВВП США"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f lm"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="tx"><div class="num big">≈13%</div><p class="p">ВВП США – профессиональные услуги (пример данных); в десять раз больше индустрии софта.</p><div><span class="tag line">1 клетка = 1% ВВП</span></div></div></div><div class="foot">Пример данных, цифра приблизительная</div></div></div>
+</div>

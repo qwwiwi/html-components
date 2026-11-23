@@ -1,0 +1,64 @@
+<!--
+  component: data-bar-horizontal
+  category: data
+  title_ru: Горизонтальные столбики
+  use_for: Сравнение значений по категориям с подписями; нулевая категория остаётся на виду с маркером.
+  data_slots: названия категорий, значения, ширина столбика в % (значение / максимум * 78), заголовок, сноска
+  source: 21st.dev #44394 «Bar Chart», автор timmikeladze
+  license: оригинал на 21st.dev: лицензия не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-data-bar-horizontal (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-data-bar-horizontal-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-data-bar-horizontal-root,.hc-data-bar-horizontal-root *{box-sizing:border-box}
+.hc-data-bar-horizontal-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-data-bar-horizontal-root *{min-width:0}
+.hc-data-bar-horizontal-root svg{max-width:100%;height:auto}
+.hc-data-bar-horizontal-root .mono{font-family:var(--mono)}
+.hc-data-bar-horizontal-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-data-bar-horizontal-root mark,.hc-data-bar-horizontal-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-data-bar-horizontal-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-data-bar-horizontal-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-data-bar-horizontal-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-data-bar-horizontal-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-data-bar-horizontal-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-data-bar-horizontal-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-data-bar-horizontal-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-data-bar-horizontal-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-data-bar-horizontal-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-data-bar-horizontal-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-data-bar-horizontal-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-data-bar-horizontal-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-data-bar-horizontal-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-data-bar-horizontal{max-width:760px;margin:0 auto}
+.hc-data-bar-horizontal .hb{display:grid;grid-template-columns:minmax(90px,170px) minmax(0,1fr);gap:12px 16px;align-items:center;margin-top:16px}
+.hc-data-bar-horizontal .nm{font-size:15px;font-weight:500}
+.hc-data-bar-horizontal .tr{display:flex;align-items:center;gap:10px;min-height:26px}
+.hc-data-bar-horizontal .b{height:22px;border-radius:6px;background:var(--soft)}
+.hc-data-bar-horizontal .b.ink{background:var(--ink)}
+.hc-data-bar-horizontal .b.sand{background:var(--sand2)}
+.hc-data-bar-horizontal .zb{width:10px;height:22px;border-radius:6px;background:var(--lime);border:1.5px solid var(--ink)}
+.hc-data-bar-horizontal .vl{font:700 15px var(--mono)}
+@media(max-width:560px){.hc-data-bar-horizontal .hb{grid-template-columns:96px minmax(0,1fr);gap:12px 10px}.hc-data-bar-horizontal .nm{font-size:13px}.hc-data-bar-horizontal .b{max-width:100%}}
+.hc-data-bar-horizontal .nt{margin-top:16px;font:500 12px/1.4 var(--mono);color:var(--muted)}
+</style>
+<div class="hc-data-bar-horizontal-root">
+<div class="hc-data-bar-horizontal"><div class="card">
+<span class="eyebrow">Количество по категориям · всего 201</span>
+<div class="hb">
+<div class="nm">Категория А</div><div class="tr"><div class="b ink" style="width:78.0%"></div><span class="vl">98</span></div>
+<div class="nm">Категория Б</div><div class="tr"><div class="b " style="width:8.0%"></div><span class="vl">10</span></div>
+<div class="nm">Категория В</div><div class="tr"><div class="b " style="width:7.2%"></div><span class="vl">9</span></div>
+<div class="nm">Категория Г</div><div class="tr"><div class="b " style="width:7.2%"></div><span class="vl">9</span></div>
+<div class="nm">Категория Д</div><div class="tr"><div class="b " style="width:6.4%"></div><span class="vl">8</span></div>
+<div class="nm">Остальные</div><div class="tr"><div class="b sand" style="width:40.6%"></div><span class="vl">51</span></div>
+<div class="nm">Не указана</div><div class="tr"><div class="b sand" style="width:12.7%"></div><span class="vl">16</span></div>
+<div class="nm"><b>Категория Ж</b></div><div class="tr"><div class="zb"></div><span class="vl">0</span></div>
+</div>
+<div class="nt">пример данных</div></div></div>
+</div>

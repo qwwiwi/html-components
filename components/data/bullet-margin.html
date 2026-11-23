@@ -1,0 +1,74 @@
+<!--
+  component: data-bullet-margin
+  category: data
+  title_ru: Bullet chart – маржа и доля софта против метки
+  use_for: Слайд или раздел отчёта, где нужно показать факт против целевой метки (30% против 50%) и вторую строку с долей в расходах; наглядно видно, где показатель не дотягивает до метки.
+  data_slots: заголовок, названия двух строк, факт и метка в процентах (числа и ширины полос), подписи под шкалой, легенда, сноска
+  source: 21st.dev #29454 «Bench Matrix», автор eugeneshilow
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-data-bullet-margin (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-data-bullet-margin-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-data-bullet-margin-root,.hc-data-bullet-margin-root *{box-sizing:border-box}
+.hc-data-bullet-margin-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-data-bullet-margin-root *{min-width:0}
+.hc-data-bullet-margin-root svg{max-width:100%;height:auto}
+.hc-data-bullet-margin-root .mono{font-family:var(--mono)}
+.hc-data-bullet-margin-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-data-bullet-margin-root mark,.hc-data-bullet-margin-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-data-bullet-margin-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-data-bullet-margin-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-data-bullet-margin-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-data-bullet-margin-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-data-bullet-margin-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-data-bullet-margin-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-data-bullet-margin-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-data-bullet-margin-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-data-bullet-margin-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-data-bullet-margin-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-data-bullet-margin-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-data-bullet-margin-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-data-bullet-margin-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-data-bullet-margin .card.pl{padding:clamp(16px,3vw,28px)}
+.hc-data-bullet-margin .hd{display:grid;gap:6px;margin-bottom:18px}
+.hc-data-bullet-margin .hd .h3{margin:0}
+.hc-data-bullet-margin .leg{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px;font-size:13px;color:var(--soft)}
+.hc-data-bullet-margin .leg span{display:inline-flex;align-items:center;gap:7px}
+.hc-data-bullet-margin .leg i{display:inline-block;width:14px;height:8px;border-radius:2px;flex:none}
+.hc-data-bullet-margin .foot{margin-top:14px;font:500 11px/1.5 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);overflow-wrap:anywhere}
+.hc-data-bullet-margin svg text{font-family:var(--sans)}
+.hc-data-bullet-margin .svg{display:block;width:100%;height:auto;max-width:680px;margin:0 auto}
+
+.hc-data-bullet-margin .bl{padding:14px 0 6px;max-width:900px;margin:0 auto}
+.hc-data-bullet-margin .bh{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.hc-data-bullet-margin .bt{font-size:16px;font-weight:700;letter-spacing:-.01em}
+.hc-data-bullet-margin .bv{font-size:28px;font-weight:800;letter-spacing:-.03em}
+.hc-data-bullet-margin .bk{position:relative;height:34px;margin:8px 0 6px;border-radius:6px;overflow:visible}
+.hc-data-bullet-margin .b{position:absolute;top:0;bottom:0;display:block}
+.hc-data-bullet-margin .b1{background:var(--sand2);border-radius:6px 0 0 6px}
+.hc-data-bullet-margin .b2{background:#DAD8C9}
+.hc-data-bullet-margin .b3{background:var(--sand);border-radius:0 6px 6px 0}
+.hc-data-bullet-margin .bk u{position:absolute;top:0;bottom:0;width:1px;background:rgba(36,37,30,.12)}
+.hc-data-bullet-margin .act{position:absolute;left:0;top:10px;bottom:10px;background:var(--ink);border-radius:4px;display:block}
+.hc-data-bullet-margin .tk{position:absolute;top:-5px;bottom:-5px;width:4px;margin-left:-2px;background:var(--ink);border-radius:2px;display:block}
+.hc-data-bullet-margin .bs{display:flex;flex-wrap:wrap;gap:2px 16px;font-size:12px;color:var(--muted)}
+.hc-data-bullet-margin .tl2{font-weight:700;color:var(--ink)}
+.hc-data-bullet-margin .axs{position:relative;height:16px;max-width:900px;margin:4px auto 0;border-top:1px solid var(--ink)}
+.hc-data-bullet-margin .axs span{position:absolute;top:3px;transform:translateX(-50%);font:600 11px var(--mono);color:var(--muted)}
+.hc-data-bullet-margin .axs span:first-child{transform:none}
+.hc-data-bullet-margin .axs span:last-child{transform:translateX(-100%)}
+.hc-data-bullet-margin .sep{height:1px;background:var(--line);margin:10px auto 4px;max-width:900px}
+@media (max-width:520px){
+.hc-data-bullet-margin .bv{font-size:24px}
+.hc-data-bullet-margin .bt{font-size:15px}
+}
+</style>
+<div class="hc-data-bullet-margin-root">
+<div class="hc-data-bullet-margin"><div class="card pl"><div class="hd"><div class="eyebrow">Bullet chart · факт, метка и ориентиры, %</div><div class="h3">Маржа 30% против метки 50%, а софт – лишь <mark>1 из 7</mark></div></div><div class="bl"><div class="bh"><div class="bt">Маржа</div><div class="bv">30%</div></div><div class="bk"><i class="b b1" style="left:0;width:42.86%"></i><i class="b b2" style="left:42.86%;width:28.57%"></i><i class="b b3" style="left:71.43%;width:28.57%"></i><u style="left:14.29%"></u><u style="left:28.57%"></u><u style="left:42.86%"></u><u style="left:57.14%"></u><u style="left:71.43%"></u><u style="left:85.71%"></u><i class="act" style="width:42.86%" title="Маржа: 30%"></i><i class="tk" style="left:71.43%" title="метка 50%"></i></div><div class="bs"><span>обычная сервисная фирма · полосы 0–30 / 30–50 / 50–70</span><span class="tl2" style="margin-left:auto"><mark>50%+</mark> – целевая метка</span></div></div><div class="sep"></div><div class="bl"><div class="bh"><div class="bt">Доля софта в расходах на софт + услуги</div><div class="bv">14%</div></div><div class="bk"><i class="b b3" style="left:0;width:100%"></i><u style="left:14.29%"></u><u style="left:28.57%"></u><u style="left:42.86%"></u><u style="left:57.14%"></u><u style="left:71.43%"></u><u style="left:85.71%"></u><i class="act" style="width:20.00%" title="Доля софта в расходах на софт + услуги: 14%"></i><i class="tk" style="left:71.43%" title="метка 50%"></i></div><div class="bs"><span>1 из 7: расчёт из «$1&nbsp;:&nbsp;$6»</span><span class="tl2" style="margin-left:auto">метка 50%</span></div></div><div class="axs"><span style="left:0.00%">0</span><span style="left:14.29%">10</span><span style="left:28.57%">20</span><span style="left:42.86%">30</span><span style="left:57.14%">40</span><span style="left:71.43%">50</span><span style="left:85.71%">60</span><span style="left:100.00%">70</span></div><div class="leg"><span><i style="background:var(--ink);height:10px"></i>факт</span><span><i style="background:var(--ink);width:4px;height:16px"></i>метка</span><span><i style="background:var(--sand2);height:12px"></i>полосы – ориентиры</span></div><div class="foot">Одна шкала 0–70% для обеих строк. Пример данных; доля 14% – расчёт, не измерение</div></div></div>
+</div>

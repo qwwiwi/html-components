@@ -1,0 +1,50 @@
+<!--
+  component: data-pareto-rounds
+  category: data
+  title_ru: Pareto chart – значения по убыванию
+  use_for: Слайд или раздел отчёта, где шесть раундов показаны по убыванию вместе с линией накопленной доли; видно, что четыре крупнейших дают 80% суммы.
+  data_slots: заголовок, названия и значения шести столбцов, накопленные доли, подписи легенды, сноска
+  source: 21st.dev #38544 «Pareto Chart», автор klyv-ui
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-data-pareto-rounds (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-data-pareto-rounds-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-data-pareto-rounds-root,.hc-data-pareto-rounds-root *{box-sizing:border-box}
+.hc-data-pareto-rounds-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-data-pareto-rounds-root *{min-width:0}
+.hc-data-pareto-rounds-root svg{max-width:100%;height:auto}
+.hc-data-pareto-rounds-root .mono{font-family:var(--mono)}
+.hc-data-pareto-rounds-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-data-pareto-rounds-root mark,.hc-data-pareto-rounds-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-data-pareto-rounds-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-data-pareto-rounds-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-data-pareto-rounds-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-data-pareto-rounds-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-data-pareto-rounds-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-data-pareto-rounds-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-data-pareto-rounds-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-data-pareto-rounds-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-data-pareto-rounds-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-data-pareto-rounds-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-data-pareto-rounds-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-data-pareto-rounds-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-data-pareto-rounds-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-data-pareto-rounds .card.pl{padding:clamp(16px,3vw,28px)}
+.hc-data-pareto-rounds .hd{display:grid;gap:6px;margin-bottom:18px}
+.hc-data-pareto-rounds .hd .h3{margin:0}
+.hc-data-pareto-rounds .leg{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px;font-size:13px;color:var(--soft)}
+.hc-data-pareto-rounds .leg span{display:inline-flex;align-items:center;gap:7px}
+.hc-data-pareto-rounds .leg i{display:inline-block;width:14px;height:8px;border-radius:2px;flex:none}
+.hc-data-pareto-rounds .foot{margin-top:14px;font:500 11px/1.5 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);overflow-wrap:anywhere}
+.hc-data-pareto-rounds svg text{font-family:var(--sans)}
+.hc-data-pareto-rounds .svg{display:block;width:100%;height:auto;max-width:680px;margin:0 auto}
+</style>
+<div class="hc-data-pareto-rounds-root">
+<div class="hc-data-pareto-rounds"><div class="card pl"><div class="hd"><div class="eyebrow">Раунды по размеру · доля от $610&nbsp;млн</div><div class="h3">Четыре раунда из шести дают <mark>80%</mark> суммы</div></div><svg class="svg" viewBox="0 0 400 262" role="img" aria-label="Диаграмма Парето: шесть раундов по убыванию и линия накопленной доли от 610 млн долларов, 80 процентов набираются на четвёртом раунде, пример данных" xmlns="http://www.w3.org/2000/svg"><line x1="40" x2="392" y1="206.0" y2="206.0" stroke="#8A8D7E" stroke-width="1" /><text x="34.0" y="210.0" font-size="11" fill="#5C6053" text-anchor="end" font-weight="500" >0%</text><line x1="40" x2="392" y1="120.0" y2="120.0" stroke="#D8D7C9" stroke-width="1" /><text x="34.0" y="124.0" font-size="11" fill="#5C6053" text-anchor="end" font-weight="500" >50%</text><line x1="40" x2="392" y1="34.0" y2="34.0" stroke="#D8D7C9" stroke-width="1" /><text x="34.0" y="38.0" font-size="11" fill="#5C6053" text-anchor="end" font-weight="500" >100%</text><line x1="40" x2="392" y1="68.4" y2="68.4" stroke="#24251E" stroke-width="1" stroke-dasharray="4 4"/><text x="44.0" y="63.4" font-size="11" fill="#24251E" text-anchor="start" font-weight="700" >80%</text><rect x="51.3" y="160.9" width="36" height="45.1" rx="4" fill="#D4FF00" stroke="#24251E" stroke-width="1.5"><title>Компания А: $160 млн (26% от $610 млн)</title></rect><text x="69.3" y="177.9" font-size="12" fill="#24251E" text-anchor="middle" font-weight="800" >160</text><text x="69.3" y="228.0" font-size="11" fill="#24251E" text-anchor="middle" font-weight="600" >Комп. А</text><rect x="110.0" y="170.8" width="36" height="35.2" rx="4" fill="#8A8D7E"><title>Компания Б: $125 млн (20% от $610 млн)</title></rect><text x="128.0" y="187.8" font-size="12" fill="#24251E" text-anchor="middle" font-weight="800" >125</text><text x="128.0" y="228.0" font-size="11" fill="#24251E" text-anchor="middle" font-weight="600" >Комп. Б</text><rect x="168.7" y="172.2" width="36" height="33.8" rx="4" fill="#8A8D7E"><title>Компания В: $120 млн (20% от $610 млн)</title></rect><text x="186.7" y="189.2" font-size="12" fill="#24251E" text-anchor="middle" font-weight="800" >120</text><text x="186.7" y="228.0" font-size="11" fill="#24251E" text-anchor="middle" font-weight="600" >Комп. В</text><rect x="227.3" y="182.0" width="36" height="24.0" rx="4" fill="#8A8D7E"><title>Компания Г: $85 млн (14% от $610 млн)</title></rect><text x="245.3" y="199.0" font-size="12" fill="#24251E" text-anchor="middle" font-weight="800" >85</text><text x="245.3" y="228.0" font-size="11" fill="#24251E" text-anchor="middle" font-weight="600" >Комп. Г</text><rect x="286.0" y="189.1" width="36" height="16.9" rx="4" fill="#8A8D7E"><title>Компания Д: $60 млн (10% от $610 млн)</title></rect><text x="304.0" y="185.1" font-size="12" fill="#24251E" text-anchor="middle" font-weight="800" >60</text><text x="304.0" y="228.0" font-size="11" fill="#24251E" text-anchor="middle" font-weight="600" >Комп. Д</text><rect x="344.7" y="189.1" width="36" height="16.9" rx="4" fill="#8A8D7E"><title>Компания Е: $60 млн (10% от $610 млн)</title></rect><text x="362.7" y="185.1" font-size="12" fill="#24251E" text-anchor="middle" font-weight="800" >60</text><text x="362.7" y="228.0" font-size="11" fill="#24251E" text-anchor="middle" font-weight="600" >Комп. Е</text><polyline points="69.3,161.3 128.0,125.2 186.7,92.5 245.3,68.4 304.0,51.2 362.7,34.0" fill="none" stroke="#24251E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="69.3" cy="161.3" r="3.5" fill="#24251E"><title>накопленная доля: 26%</title></circle><text x="69.3" y="151.3" font-size="11" fill="#24251E" text-anchor="middle" font-weight="700" >26%</text><circle cx="128.0" cy="125.2" r="3.5" fill="#24251E"><title>накопленная доля: 47%</title></circle><text x="128.0" y="115.2" font-size="11" fill="#24251E" text-anchor="middle" font-weight="700" >47%</text><circle cx="186.7" cy="92.5" r="3.5" fill="#24251E"><title>накопленная доля: 66%</title></circle><text x="186.7" y="82.5" font-size="11" fill="#24251E" text-anchor="middle" font-weight="700" >66%</text><circle cx="245.3" cy="68.4" r="3.5" fill="#24251E"><title>накопленная доля: 80%</title></circle><text x="245.3" y="58.4" font-size="11" fill="#24251E" text-anchor="middle" font-weight="700" >80%</text><circle cx="304.0" cy="51.2" r="3.5" fill="#24251E"><title>накопленная доля: 90%</title></circle><text x="304.0" y="41.2" font-size="11" fill="#24251E" text-anchor="middle" font-weight="700" >90%</text><circle cx="362.7" cy="34.0" r="3.5" fill="#24251E"><title>накопленная доля: 100%</title></circle><text x="362.7" y="24.0" font-size="11" fill="#24251E" text-anchor="middle" font-weight="700" >100%</text><text x="34.0" y="18.0" font-size="11" fill="#5C6053" text-anchor="end" font-weight="500" >доля</text></svg><div class="leg"><span><i style="background:var(--grey)"></i>раунд, $&nbsp;млн (высота – доля от $610 млн)</span><span><i style="background:var(--lime);border:1px solid var(--ink)"></i>самый крупный – Компания А</span><span><svg width="26" height="8" aria-hidden="true"><line x1="0" y1="4" x2="26" y2="4" stroke="#24251E" stroke-width="2"/></svg>накопленная доля</span></div><div class="foot">Одна шкала, 0–100% от $610 млн. Пример данных: шесть раундов, не весь рынок</div></div></div>
+</div>

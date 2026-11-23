@@ -1,0 +1,51 @@
+<!--
+  component: data-sankey-pnl
+  category: data
+  title_ru: Sankey – выручка, себестоимость и маржа
+  use_for: Слайд или раздел отчёта, где поток выручки двух моделей делится на себестоимость и маржу; показывает, откуда берётся разрыв между 30% и 50%+.
+  data_slots: заголовок, названия двух моделей, значения себестоимости и маржи (подписи и ширины потоков), легенда, сноска
+  source: 21st.dev #30455 «Pipeline Sankey Chart», автор LegionWebDev
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-data-sankey-pnl (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-data-sankey-pnl-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-data-sankey-pnl-root,.hc-data-sankey-pnl-root *{box-sizing:border-box}
+.hc-data-sankey-pnl-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-data-sankey-pnl-root *{min-width:0}
+.hc-data-sankey-pnl-root svg{max-width:100%;height:auto}
+.hc-data-sankey-pnl-root .mono{font-family:var(--mono)}
+.hc-data-sankey-pnl-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-data-sankey-pnl-root mark,.hc-data-sankey-pnl-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-data-sankey-pnl-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-data-sankey-pnl-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-data-sankey-pnl-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-data-sankey-pnl-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-data-sankey-pnl-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-data-sankey-pnl-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-data-sankey-pnl-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-data-sankey-pnl-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-data-sankey-pnl-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-data-sankey-pnl-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-data-sankey-pnl-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-data-sankey-pnl-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-data-sankey-pnl-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-data-sankey-pnl .card.pl{padding:clamp(16px,3vw,28px)}
+.hc-data-sankey-pnl .hd{display:grid;gap:6px;margin-bottom:18px}
+.hc-data-sankey-pnl .hd .h3{margin:0}
+.hc-data-sankey-pnl .leg{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px;font-size:13px;color:var(--soft)}
+.hc-data-sankey-pnl .leg span{display:inline-flex;align-items:center;gap:7px}
+.hc-data-sankey-pnl .leg i{display:inline-block;width:14px;height:8px;border-radius:2px;flex:none}
+.hc-data-sankey-pnl .foot{margin-top:14px;font:500 11px/1.5 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);overflow-wrap:anywhere}
+.hc-data-sankey-pnl svg text{font-family:var(--sans)}
+.hc-data-sankey-pnl .svg{display:block;width:100%;height:auto;max-width:680px;margin:0 auto}
+.hc-data-sankey-pnl .svg{max-width:640px}
+</style>
+<div class="hc-data-sankey-pnl-root">
+<div class="hc-data-sankey-pnl"><div class="card pl"><div class="hd"><div class="eyebrow">Куда уходит выручка · на каждые 100</div><div class="h3">Те же 100 выручки: маржа <mark>около 30</mark> против 50+</div></div><svg class="svg" viewBox="0 0 420 332" role="img" aria-label="Диаграмма Сэнки: с выручки 100 обычной фирмы 70 уходит в себестоимость и около 30 остаётся маржой, у второй модели по целевой метке 50 в себестоимость и 50 и больше в маржу, пример данных" xmlns="http://www.w3.org/2000/svg"><path d="M10,30 C210.0,30 210.0,30 410,30 L410,100 C210.0,100 210.0,100 10,100 Z" fill="#C9C8B8" stroke="#C9C8B8" stroke-width="1"><title>Обычная фирма: себестоимость 70</title></path><path d="M10,200 C210.0,200 210.0,100 410,100 L410,150 C210.0,150 210.0,250 10,250 Z" fill="#C9C8B8" stroke="#C9C8B8" stroke-width="1"><title>Модель Б: себестоимость 50</title></path><path d="M10,100 C210.0,100 210.0,220 410,220 L410,250 C210.0,250 210.0,130 10,130 Z" fill="#E9E7DA" stroke="#8A8D7E" stroke-width="1"><title>Обычная фирма: маржа около 30</title></path><path d="M10,250 C210.0,250 210.0,250 410,250 L410,300 C210.0,300 210.0,300 10,300 Z" fill="#D4FF00" stroke="#24251E" stroke-width="1"><title>Модель Б: маржа 50 и больше</title></path><rect x="0" y="30" width="10" height="100" rx="3" fill="#24251E"/><rect x="0" y="200" width="10" height="100" rx="3" fill="#24251E"/><rect x="410" y="30" width="10" height="120" rx="3" fill="#8A8D7E"/><rect x="410" y="220" width="10" height="80" rx="3" fill="#24251E"/><text x="0.0" y="20.0" font-size="13" fill="#24251E" text-anchor="start" font-weight="700" >Обычная сервисная фирма&nbsp;· 100</text><text x="0.0" y="188.0" font-size="13" fill="#24251E" text-anchor="start" font-weight="700" >Модель Б, целевая метка&nbsp;· 100</text><text x="418.0" y="20.0" font-size="13" fill="#24251E" text-anchor="end" font-weight="700" >Себестоимость 70&nbsp;+&nbsp;50&nbsp;=&nbsp;120</text><text x="418.0" y="322.0" font-size="13" fill="#24251E" text-anchor="end" font-weight="700" >Маржа 30&nbsp;+&nbsp;50&nbsp;=&nbsp;80</text><text x="352.0" y="66.0" font-size="13" fill="#24251E" text-anchor="middle" font-weight="700" >70</text><text x="352.0" y="130.0" font-size="13" fill="#24251E" text-anchor="middle" font-weight="700" >50</text><text x="340.0" y="240.0" font-size="12" fill="#24251E" text-anchor="middle" font-weight="700" >около 30%</text><text x="352.0" y="280.0" font-size="14" fill="#24251E" text-anchor="middle" font-weight="800" >50%+</text></svg><div class="leg"><span><i style="background:var(--sand2)"></i>себестоимость</span><span><i style="background:var(--sand);border:1px solid var(--grey)"></i>маржа, около 30%</span><span><i style="background:var(--lime);border:1px solid var(--ink)"></i>маржа, 50%+ (целевая метка)</span></div><div class="foot">Пример данных: условные 100 на фирму, цифры приблизительные. Не данные конкретных компаний</div></div></div>
+</div>

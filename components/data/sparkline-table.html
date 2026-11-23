@@ -1,0 +1,66 @@
+<!--
+  component: data-sparkline-table
+  category: data
+  title_ru: Sparkline table – ниши и динамика по месяцам
+  use_for: Слайд или раздел отчёта с компактной таблицей «ниша – сумма – число раундов – линия по месяцам» вместо трёх отдельных графиков.
+  data_slots: заголовок, названия ниш, суммы и число раундов, точки спарклайнов, aria-подписи, сноска
+  source: 21st.dev #44279 «Spark Table», автор isaiahbjork
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-data-sparkline-table (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-data-sparkline-table-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-data-sparkline-table-root,.hc-data-sparkline-table-root *{box-sizing:border-box}
+.hc-data-sparkline-table-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-data-sparkline-table-root *{min-width:0}
+.hc-data-sparkline-table-root svg{max-width:100%;height:auto}
+.hc-data-sparkline-table-root .mono{font-family:var(--mono)}
+.hc-data-sparkline-table-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-data-sparkline-table-root mark,.hc-data-sparkline-table-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-data-sparkline-table-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-data-sparkline-table-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-data-sparkline-table-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-data-sparkline-table-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-data-sparkline-table-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-data-sparkline-table-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-data-sparkline-table-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-data-sparkline-table-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-data-sparkline-table-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-data-sparkline-table-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-data-sparkline-table-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-data-sparkline-table-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-data-sparkline-table-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-data-sparkline-table .card.pl{padding:clamp(16px,3vw,28px)}
+.hc-data-sparkline-table .hd{display:grid;gap:6px;margin-bottom:18px}
+.hc-data-sparkline-table .hd .h3{margin:0}
+.hc-data-sparkline-table .leg{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px;font-size:13px;color:var(--soft)}
+.hc-data-sparkline-table .leg span{display:inline-flex;align-items:center;gap:7px}
+.hc-data-sparkline-table .leg i{display:inline-block;width:14px;height:8px;border-radius:2px;flex:none}
+.hc-data-sparkline-table .foot{margin-top:14px;font:500 11px/1.5 var(--mono);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);overflow-wrap:anywhere}
+.hc-data-sparkline-table svg text{font-family:var(--sans)}
+.hc-data-sparkline-table .svg{display:block;width:100%;height:auto;max-width:680px;margin:0 auto}
+
+.hc-data-sparkline-table .th2,.hc-data-sparkline-table .tr2{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,.8fr) minmax(130px,1.2fr);gap:8px 16px;align-items:center}
+.hc-data-sparkline-table .th2{padding:0 0 10px;font:600 11px var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--ink)}
+.hc-data-sparkline-table .tr2{padding:16px 0;border-bottom:1px solid var(--line)}
+.hc-data-sparkline-table .nm{font-size:17px;font-weight:700;letter-spacing:-.01em}
+.hc-data-sparkline-table .v{font-size:24px}
+.hc-data-sparkline-table .v2{font-size:15px;color:var(--soft)}
+.hc-data-sparkline-table .sp svg{display:block;width:100%;max-width:200px;height:auto}
+@media (max-width:560px){
+.hc-data-sparkline-table .th2{display:none}
+.hc-data-sparkline-table .tr2{grid-template-columns:1fr 1fr;padding:16px 0}
+.hc-data-sparkline-table .tr2 .nm,.hc-data-sparkline-table .tr2 .sp{grid-column:1/-1}
+.hc-data-sparkline-table .tr2 .c[data-label]::before{content:attr(data-label);display:block;font:600 10px/1.3 var(--mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.hc-data-sparkline-table .tr2 .nm[data-label]::before{display:none}
+.hc-data-sparkline-table .sp svg{max-width:100%}
+}
+</style>
+<div class="hc-data-sparkline-table-root">
+<div class="hc-data-sparkline-table"><div class="card pl"><div class="hd"><div class="eyebrow">Ниши · сумма раундов и динамика</div><div class="h3">Три ниши в шести раундах: ниша Б впереди</div></div><div class="th2"><div>Ниша</div><div>Сумма раундов</div><div>Раундов</div><div>Нарастающим итогом, фев–июл</div></div><div class="tr2"><div class="c nm" data-label="Ниша">Ниша А</div><div class="c" data-label="Сумма раундов"><span class="num v">$240&nbsp;млн</span></div><div class="c" data-label="Раундов"><span class="v2">3&nbsp;раунда</span></div><div class="c sp" data-label="Нарастающим итогом, фев–июл"><svg viewBox="0 0 160 44" role="img" aria-label="Нарастающий итог по месяцам, февраль – июль: 60, 120, 120, 120, 120, 240" xmlns="http://www.w3.org/2000/svg"><line x1="6" x2="154" y1="38" y2="38" stroke="#D8D7C9" stroke-width="1"/><polyline points="6.0,31.6 35.6,25.2 65.2,25.2 94.8,25.2 124.4,25.2 154.0,12.4" fill="none" stroke="#24251E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="154.0" cy="12.4" r="5" fill="#24251E" stroke="#24251E" stroke-width="2"/></svg></div></div><div class="tr2"><div class="c nm" data-label="Ниша">Ниша Б</div><div class="c" data-label="Сумма раундов"><span class="num v">$285&nbsp;млн</span></div><div class="c" data-label="Раундов"><span class="v2">2&nbsp;раунда</span></div><div class="c sp" data-label="Нарастающим итогом, фев–июл"><svg viewBox="0 0 160 44" role="img" aria-label="Нарастающий итог по месяцам, февраль – июль: 0, 0, 0, 285, 285, 285" xmlns="http://www.w3.org/2000/svg"><line x1="6" x2="154" y1="38" y2="38" stroke="#D8D7C9" stroke-width="1"/><polyline points="6.0,38.0 35.6,38.0 65.2,38.0 94.8,7.6 124.4,7.6 154.0,7.6" fill="none" stroke="#24251E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="154.0" cy="7.6" r="5" fill="#D4FF00" stroke="#24251E" stroke-width="2"/></svg></div></div><div class="tr2"><div class="c nm" data-label="Ниша">Ниша В</div><div class="c" data-label="Сумма раундов"><span class="num v">$85&nbsp;млн</span></div><div class="c" data-label="Раундов"><span class="v2">1&nbsp;раунд</span></div><div class="c sp" data-label="Нарастающим итогом, фев–июл"><svg viewBox="0 0 160 44" role="img" aria-label="Нарастающий итог по месяцам, февраль – июль: 0, 0, 85, 85, 85, 85" xmlns="http://www.w3.org/2000/svg"><line x1="6" x2="154" y1="38" y2="38" stroke="#D8D7C9" stroke-width="1"/><polyline points="6.0,38.0 35.6,38.0 65.2,28.9 94.8,28.9 124.4,28.9 154.0,28.9" fill="none" stroke="#24251E" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="154.0" cy="28.9" r="5" fill="#24251E" stroke="#24251E" stroke-width="2"/></svg></div></div><div class="foot">Шкала спарклайнов общая, 0–300 $ млн; точка – значение на июль. Пример данных: шесть раундов, не весь рынок</div></div></div>
+</div>
