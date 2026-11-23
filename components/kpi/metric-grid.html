@@ -1,0 +1,71 @@
+<!--
+  component: kpi-metric-grid
+  category: kpi
+  title_ru: KPI – сетка из четырёх метрик с мини-графиками
+  use_for: Сводная полоса в отчёте или на слайде: четыре ключевые цифры в одну строку, первая карточка тёмная.
+  data_slots: четыре надзаголовка и числа, шесть значений мини-графика и подписи столбцов, подписи под карточками
+  source: 21st.dev #29167 «Insight Cards», автор arihantcodes_1f7b8c4d
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-kpi-metric-grid (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-kpi-metric-grid-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-kpi-metric-grid-root,.hc-kpi-metric-grid-root *{box-sizing:border-box}
+.hc-kpi-metric-grid-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-kpi-metric-grid-root *{min-width:0}
+.hc-kpi-metric-grid-root svg{max-width:100%;height:auto}
+.hc-kpi-metric-grid-root .mono{font-family:var(--mono)}
+.hc-kpi-metric-grid-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-kpi-metric-grid-root mark,.hc-kpi-metric-grid-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-kpi-metric-grid-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-kpi-metric-grid-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-kpi-metric-grid-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-kpi-metric-grid-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-kpi-metric-grid-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-kpi-metric-grid-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-kpi-metric-grid-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-kpi-metric-grid-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-kpi-metric-grid-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-kpi-metric-grid-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-kpi-metric-grid-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-kpi-metric-grid-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-kpi-metric-grid-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-kpi-metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:16px}
+.hc-kpi-metric-grid .card{display:flex;flex-direction:column;gap:10px;padding:20px}
+.hc-kpi-metric-grid .v{font-size:clamp(34px,4.4vw,46px)}
+.hc-kpi-metric-grid .v small{font-size:.5em;letter-spacing:-.02em;font-weight:700}
+.hc-kpi-metric-grid .cap{font:500 11px/1.35 var(--mono);color:var(--muted);margin-top:auto}
+.hc-kpi-metric-grid .card.dark .cap{color:#C9C7B8}
+.hc-kpi-metric-grid .bars{display:flex;align-items:flex-end;gap:6px;height:64px;margin-top:6px}
+.hc-kpi-metric-grid .bc{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:4px;height:100%}
+.hc-kpi-metric-grid .bc i{display:block;width:100%;border-radius:4px 4px 0 0;background:#6E7063}
+.hc-kpi-metric-grid .bc i.mx{background:var(--lime)}
+.hc-kpi-metric-grid .bc span{font:500 11px/1 var(--mono);color:#C9C7B8}
+.hc-kpi-metric-grid .sq{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.hc-kpi-metric-grid .sq i{width:14px;height:14px;border-radius:4px;background:var(--ink)}
+.hc-kpi-metric-grid .sq i.o{background:transparent;border:1.5px solid var(--sand2)}
+.hc-kpi-metric-grid .sq.dt i{border-radius:50%}
+.hc-kpi-metric-grid .track{height:8px;border-radius:4px;background:var(--sand);margin-top:14px}
+.hc-kpi-metric-grid .track i{display:block;height:100%;border-radius:4px;background:var(--ink)}
+</style>
+<div class="hc-kpi-metric-grid-root">
+<div class="hc-kpi-metric-grid">
+<div class="card dark"><span class="eyebrow">раунды за год</span><div class="v num">$841&nbsp;<small>млн+</small></div>
+<div class="bars" role="img" aria-label="Шесть раундов, $ млн: 60, 60, 85, 125, 160, 120"><div class="bc"><i style="height:16.5px" title="Компания А: $60 млн"></i><span>60</span></div><div class="bc"><i style="height:16.5px" title="Компания Б: $60 млн"></i><span>60</span></div><div class="bc"><i style="height:23.4px" title="Компания В: $85 млн"></i><span>85</span></div><div class="bc"><i style="height:34.4px" title="Компания Г: $125 млн"></i><span>125</span></div><div class="bc"><i class="mx" style="height:44.0px" title="Компания Д: $160 млн"></i><span>160</span></div><div class="bc"><i style="height:33.0px" title="Компания Е: $120 млн"></i><span>120</span></div></div>
+<div class="cap">шесть раундов, $ млн · пример данных; максимум выделен</div></div>
+<div class="card"><span class="eyebrow">датированных раундов</span><div class="v num">15</div>
+<div class="sq" role="img" aria-label="15 раундов, из них 6 крупных"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="o"></i><i class="o"></i><i class="o"></i><i class="o"></i><i class="o"></i><i class="o"></i><i class="o"></i><i class="o"></i><i class="o"></i></div>
+<div class="cap">залиты 6 крупных раундов</div></div>
+<div class="card"><span class="eyebrow">компаний</span><div class="v num">14</div>
+<div class="sq dt" role="img" aria-label="14 компаний"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></div>
+<div class="cap">Источник: пример данных</div></div>
+<div class="card"><span class="eyebrow">Компания Б, Series B (31.03)</span><div class="v num"><mark>$60</mark>&nbsp;<small>млн</small></div>
+<div class="track" role="img" aria-label="$60 млн из максимальных $160 млн"><i style="width:37.5%"></i></div>
+<div class="cap">шкала до $160 млн (Компания Д) – максимум из шести</div></div>
+</div>
+</div>

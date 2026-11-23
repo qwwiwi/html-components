@@ -1,0 +1,72 @@
+<!--
+  component: kpi-price-range
+  category: kpi
+  title_ru: KPI – ценовой диапазон и цена за результат
+  use_for: Слайд, отчёт или блок цен на лендинге: типичный ценовой диапазон рядом с ценой тарифа и тезисом «за результат, не за часы».
+  data_slots: надзаголовок, диапазон цен и шкала (подписи и позиция отрезка), название и цена тарифа, пояснения, тезис в чипе
+  source: 21st.dev #39900 «Tweenly Chart KPI», автор mirukullacode
+  license: оригинал на 21st.dev: MIT License (указана в шапке кода 21st); код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-kpi-price-range (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-kpi-price-range-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-kpi-price-range-root,.hc-kpi-price-range-root *{box-sizing:border-box}
+.hc-kpi-price-range-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-kpi-price-range-root *{min-width:0}
+.hc-kpi-price-range-root svg{max-width:100%;height:auto}
+.hc-kpi-price-range-root .mono{font-family:var(--mono)}
+.hc-kpi-price-range-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-kpi-price-range-root mark,.hc-kpi-price-range-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-kpi-price-range-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-kpi-price-range-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-kpi-price-range-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-kpi-price-range-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-kpi-price-range-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-kpi-price-range-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-kpi-price-range-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-kpi-price-range-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-kpi-price-range-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-kpi-price-range-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-kpi-price-range-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-kpi-price-range-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-kpi-price-range-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-kpi-price-range{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:16px;max-width:980px;margin:0 auto}
+.hc-kpi-price-range .card{display:flex;flex-direction:column;gap:12px}
+.hc-kpi-price-range .v{font-size:clamp(34px,5.2vw,58px);letter-spacing:-.04em}
+.hc-kpi-price-range .v small{font-size:.38em;font-weight:700;letter-spacing:-.01em;color:var(--soft);margin-left:6px;white-space:nowrap}
+.hc-kpi-price-range .rng{position:relative;margin-top:14px;height:34px}
+.hc-kpi-price-range .rng .tr{position:absolute;left:0;right:0;top:14px;height:6px;border-radius:3px;background:var(--sand)}
+.hc-kpi-price-range .rng .sg{position:absolute;top:10px;height:14px;border-radius:7px;background:var(--lime);border:1.5px solid var(--ink)}
+.hc-kpi-price-range .ax{position:relative;height:30px;font:500 11px/1.2 var(--mono);color:var(--muted)}
+.hc-kpi-price-range .ax span{position:absolute;top:0;white-space:nowrap}
+.hc-kpi-price-range .ax span::before{content:"";position:absolute;left:50%;top:-8px;height:6px;width:1px;background:var(--sand2)}
+.hc-kpi-price-range .ax .a0{left:0;transform:none}
+.hc-kpi-price-range .ax .a0::before{left:0}
+.hc-kpi-price-range .ax .a1{left:37.5%;transform:translateX(-50%)}
+.hc-kpi-price-range .ax .a2{left:87.5%;transform:translateX(-50%)}
+.hc-kpi-price-range .dk .v{font-size:clamp(34px,4vw,46px)}
+.hc-kpi-price-range .dk .v small{color:#C9C7B8}
+.hc-kpi-price-range .dk .p{color:#C9C7B8}
+.hc-kpi-price-range .chip{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;margin-top:auto;padding:7px 12px;border-radius:999px;background:var(--lime);color:var(--ink);font:600 11px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.04em}
+@media(max-width:760px){.hc-kpi-price-range {grid-template-columns:1fr}}
+</style>
+<div class="hc-kpi-price-range-root">
+<div class="hc-kpi-price-range">
+<div class="card"><span class="eyebrow">Аутсорс бухгалтерии · Россия</span>
+<div class="v num">6&nbsp;000–14&nbsp;000&nbsp;₽<small>в месяц</small></div>
+<p class="p">типичный диапазон цены у аутсорса бухгалтерии · пример данных</p>
+<div class="rng" role="img" aria-label="Диапазон от 6 000 до 14 000 рублей в месяц на шкале 0–16 000"><div class="tr"></div><div class="sg" style="left:37.5%;width:50.0%"></div></div>
+<div class="ax"><span class="a0">0</span><span class="a1">6&nbsp;000</span><span class="a2">14&nbsp;000 ₽</span></div>
+</div>
+<div class="card dark dk"><span class="eyebrow">Тариф</span>
+<div class="v num">от&nbsp;$100<small>в месяц</small></div>
+<p class="p">цена тарифа в долларах; рубли и доллары не пересчитываем</p>
+<span class="chip"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>цена за результат, не за часы</span>
+</div>
+</div>
+</div>
