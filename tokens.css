@@ -1,0 +1,43 @@
+/*
+  html-components: shared design tokens.
+  Link this file in the page <head> (see templates/page.html) together with fonts/fonts.css.
+  Every component also carries a scoped copy of these values, so snippets work without this file.
+*/
+:root {
+  /* surfaces */
+  --bg: #FAF8F2;       /* page background (light) */
+  --paper: #FFFEFA;    /* card background */
+  --line: #D8D7C9;     /* borders, dividers */
+  --sand: #E9E7DA;     /* tracks, soft fills */
+  --sand2: #C9C8B8;    /* secondary fills, ring lines */
+  --dark: #15150F;     /* dark card */
+
+  /* text */
+  --ink: #24251E;      /* primary text */
+  --soft: #4F5147;     /* secondary text */
+  --muted: #5C6053;    /* captions, eyebrows */
+  --grey: #8A8D7E;     /* disabled, thin outlines */
+
+  /* accent: a MARKER only (highlight, one key number, one active step), never a background of a large area */
+  --lime: #D4FF00;
+
+  /* type */
+  --sans: 'Inter Tight', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+
+  /* shape */
+  --radius: 18px;
+  --shadow: 0 14px 40px rgba(10, 10, 10, .06);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
