@@ -1,0 +1,60 @@
+<!--
+  component: slide-three-paths
+  category: slide
+  title_ru: Три пути – три колонки
+  use_for: Слайд «Варианты участия» в презентации или секция лендинга: три роли, средняя (партнёрство) выделена тёмной карточкой.
+  data_slots: заголовок и подзаголовок, три названия путей, описания, по три пункта в каждой колонке, метка средней карточки
+  source: 21st.dev #18932 «Growth Plans», автор uilayout.contact
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-slide-three-paths (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-slide-three-paths-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-slide-three-paths-root,.hc-slide-three-paths-root *{box-sizing:border-box}
+.hc-slide-three-paths-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-slide-three-paths-root *{min-width:0}
+.hc-slide-three-paths-root svg{max-width:100%;height:auto}
+.hc-slide-three-paths-root .mono{font-family:var(--mono)}
+.hc-slide-three-paths-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-slide-three-paths-root mark,.hc-slide-three-paths-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-slide-three-paths-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-slide-three-paths-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-slide-three-paths-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-slide-three-paths-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-slide-three-paths-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-slide-three-paths-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-slide-three-paths-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-slide-three-paths-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-slide-three-paths-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-slide-three-paths-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-slide-three-paths-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-slide-three-paths-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-slide-three-paths-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-slide-three-paths{max-width:1100px;margin:0 auto}
+.hc-slide-three-paths .hd{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.hc-slide-three-paths .hd .h3{margin:0}
+.hc-slide-three-paths .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px;align-items:stretch}
+.hc-slide-three-paths .p{display:flex;flex-direction:column;gap:14px;padding:clamp(20px,2.6vw,28px)}
+.hc-slide-three-paths .top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.hc-slide-three-paths .no{font:800 44px/1 var(--sans);letter-spacing:-.05em;color:var(--sand2)}
+.hc-slide-three-paths .hi .no{color:#4A4A3E}
+.hc-slide-three-paths h3{margin:0;font-size:clamp(20px,2.4vw,24px);font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.hc-slide-three-paths .d{margin:0;font-size:14px;line-height:1.45;color:var(--soft)}
+.hc-slide-three-paths .hi .d{color:#C9C7B8}
+.hc-slide-three-paths ul{list-style:none;margin:auto 0 0;padding:14px 0 0;border-top:1px solid var(--sand);display:grid;gap:10px}
+.hc-slide-three-paths .hi ul{border-top-color:#33332A}
+.hc-slide-three-paths li{display:flex;gap:10px;font-size:14px;line-height:1.35}
+.hc-slide-three-paths .dot{flex:none;width:7px;height:7px;border-radius:50%;background:var(--ink);margin-top:7px}
+.hc-slide-three-paths .hi .dot{background:var(--lime)}
+@media(min-width:900px){.hc-slide-three-paths .hi{transform:translateY(-8px)}.hc-slide-three-paths .grid{padding-top:8px}}
+</style>
+<div class="hc-slide-three-paths-root">
+<div class="hc-slide-three-paths">
+<div class="hd"><div class="h3">Три пути в сообществе</div><span class="eyebrow">для четырёх ролей: специалист · предприниматель · «ищете себя» · разработчик</span></div>
+<div class="grid"><article class="card p"><div class="top"><span class="no">1</span><span class="eyebrow">Путь 1</span></div><h3>Начинающий или специалист</h3><p class="d">Научитесь работать с агентами и строить сервисы на базе своей экспертизы.</p><ul><li><span class="dot" aria-hidden="true"></span><span>работа с агентами</span></li><li><span class="dot" aria-hidden="true"></span><span>сервис на базе своей экспертизы</span></li><li><span class="dot" aria-hidden="true"></span><span>нет экспертизы – найдите партнёра: бухгалтер, финансист, маркетолог</span></li></ul></article><article class="card dark hi p"><div class="top"><span class="no">2</span><span class="tag">Следующий шаг</span></div><h3>Партнёрство</h3><p class="d">Команда запускает пилот и ищет партнёров, которые разбираются в автоматизации.</p><ul><li><span class="dot" aria-hidden="true"></span><span>пилот в ближайший месяц</span></li><li><span class="dot" aria-hidden="true"></span><span>нужны партнёры по автоматизации</span></li><li><span class="dot" aria-hidden="true"></span><span>формат «Стать партнёром» – работа вместе над сервисами компании</span></li></ul></article><article class="card p"><div class="top"><span class="no">3</span><span class="eyebrow">Путь 3</span></div><h3>Предприниматель</h3><p class="d">Вы строите такие системы внутри своей компании.</p><ul><li><span class="dot" aria-hidden="true"></span><span>учитесь оркестрации агентов</span></li><li><span class="dot" aria-hidden="true"></span><span>подключаете свои сервисы к платформе агентов</span></li><li><span class="dot" aria-hidden="true"></span><span>формат «Построить свою компанию» – внутри сообщества людей, которые такие компании строят</span></li></ul></article></div></div>
+</div>

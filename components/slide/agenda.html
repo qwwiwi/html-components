@@ -1,0 +1,75 @@
+<!--
+  component: slide-agenda
+  category: slide
+  title_ru: Повестка встречи – 9 блоков с таймингом
+  use_for: Слайд с планом встречи в начале и возврат к нему между частями: текущий блок выделен маркером, пройденные – серые с галочкой.
+  data_slots: заголовок и итог (число блоков, минуты), девять блоков (время, название, подпись, длительность, ширина полоски), текущий блок
+  source: 21st.dev #28423 «Agent Todo List», автор starc007
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-slide-agenda (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-slide-agenda-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-slide-agenda-root,.hc-slide-agenda-root *{box-sizing:border-box}
+.hc-slide-agenda-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-slide-agenda-root *{min-width:0}
+.hc-slide-agenda-root svg{max-width:100%;height:auto}
+.hc-slide-agenda-root .mono{font-family:var(--mono)}
+.hc-slide-agenda-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-slide-agenda-root mark,.hc-slide-agenda-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-slide-agenda-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-slide-agenda-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-slide-agenda-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-slide-agenda-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-slide-agenda-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-slide-agenda-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-slide-agenda-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-slide-agenda-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-slide-agenda-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-slide-agenda-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-slide-agenda-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-slide-agenda-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-slide-agenda-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-slide-agenda{max-width:960px;margin:0 auto}
+.hc-slide-agenda .hd{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.hc-slide-agenda .hd .h3{margin:0}
+.hc-slide-agenda ol{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.hc-slide-agenda .row{display:grid;grid-template-columns:28px 112px minmax(0,1fr) 90px 52px 86px;align-items:center;column-gap:12px;padding:12px 6px;border-top:1px solid var(--sand)}
+.hc-slide-agenda .row:first-child{border-top:0}
+.hc-slide-agenda .n{font:600 11px var(--mono);color:var(--grey)}
+.hc-slide-agenda .time{justify-self:start;background:var(--ink);color:var(--bg);font:600 12px/1 var(--mono);letter-spacing:.02em;padding:7px 10px;border-radius:8px;white-space:nowrap}
+.hc-slide-agenda .tt{display:block;font-weight:700;font-size:16px;letter-spacing:-.01em;line-height:1.2}
+.hc-slide-agenda .ss{display:block;margin-top:2px;font-size:13px;color:var(--muted)}
+.hc-slide-agenda .bar{display:block;height:4px;border-radius:4px;background:var(--sand)}
+.hc-slide-agenda .bar i{display:block;height:100%;border-radius:4px;background:var(--ink)}
+.hc-slide-agenda .min{font:500 11px var(--mono);color:var(--muted);text-transform:uppercase;white-space:nowrap}
+.hc-slide-agenda .st{justify-self:end;display:flex;align-items:center;color:var(--ink)}
+.hc-slide-agenda .ring{display:block;width:16px;height:16px;border:2px solid var(--sand2);border-radius:50%}
+.hc-slide-agenda .row.done .tt,.hc-slide-agenda .row.done .ss,.hc-slide-agenda .row.done .min,.hc-slide-agenda .row.done .n{color:var(--grey)}
+.hc-slide-agenda .row.done .time{background:var(--sand);color:var(--muted)}
+.hc-slide-agenda .row.done .bar i{background:var(--sand2)}
+.hc-slide-agenda .row.done .st{color:var(--grey)}
+.hc-slide-agenda .row.now{background:var(--bg);border-radius:12px;border-top-color:transparent}
+.hc-slide-agenda .row.now + .row{border-top-color:transparent}
+.hc-slide-agenda .row.now .bar i{background:var(--lime);box-shadow:inset 0 0 0 1px var(--ink)}
+.hc-slide-agenda .row.now .time{background:var(--ink);color:var(--lime)}
+@media(max-width:720px){
+ .hc-slide-agenda .row{grid-template-columns:26px minmax(0,1fr) auto;row-gap:6px;padding:12px 4px}
+ .hc-slide-agenda .time{grid-column:2;grid-row:1}
+ .hc-slide-agenda .n{grid-row:1/3;align-self:start;padding-top:8px}
+ .hc-slide-agenda .txt{grid-column:2;grid-row:2}
+ .hc-slide-agenda .st{grid-column:3;grid-row:1}
+ .hc-slide-agenda .bar,.hc-slide-agenda .min{display:none}
+}
+</style>
+<div class="hc-slide-agenda-root">
+<div class="hc-slide-agenda"><div class="card">
+<div class="hd"><div class="h3">План встречи</div><span class="eyebrow">9 блоков · 70 мин</span></div>
+<ol><li class="row done"><span class="n">01</span><span class="time">0:00–0:08</span><span class="txt"><span class="tt">Введение в тему</span><span class="ss">copilot против autopilot</span></span><span class="bar" aria-hidden="true"><i style="width:62%"></i></span><span class="min">8&nbsp;мин</span><span class="st" title="пройдено"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></li><li class="row now"><span class="n">02</span><span class="time">0:08–0:19</span><span class="txt"><span class="tt"><mark>Почему это важно</mark></span></span><span class="bar" aria-hidden="true"><i style="width:85%"></i></span><span class="min">11&nbsp;мин</span><span class="st"><span class="tag">сейчас</span></span></li><li class="row "><span class="n">03</span><span class="time">0:19–0:31</span><span class="txt"><span class="tt">Кто уже делает</span><span class="ss">Компания А, Б, В</span></span><span class="bar" aria-hidden="true"><i style="width:92%"></i></span><span class="min">12&nbsp;мин</span><span class="st"><span class="ring" aria-hidden="true"></span></span></li><li class="row "><span class="n">04</span><span class="time">0:31–0:35</span><span class="txt"><span class="tt">Опрос и вопросы</span></span><span class="bar" aria-hidden="true"><i style="width:31%"></i></span><span class="min">4&nbsp;мин</span><span class="st"><span class="ring" aria-hidden="true"></span></span></li><li class="row "><span class="n">05</span><span class="time">0:35–0:48</span><span class="txt"><span class="tt">Экономика модели</span></span><span class="bar" aria-hidden="true"><i style="width:100%"></i></span><span class="min">13&nbsp;мин</span><span class="st"><span class="ring" aria-hidden="true"></span></span></li><li class="row "><span class="n">06</span><span class="time">0:48–1:00</span><span class="txt"><span class="tt">Два пути + живая демонстрация</span></span><span class="bar" aria-hidden="true"><i style="width:92%"></i></span><span class="min">12&nbsp;мин</span><span class="st"><span class="ring" aria-hidden="true"></span></span></li><li class="row "><span class="n">07</span><span class="time">1:00–1:06</span><span class="txt"><span class="tt">Риски и ограничения</span></span><span class="bar" aria-hidden="true"><i style="width:46%"></i></span><span class="min">6&nbsp;мин</span><span class="st"><span class="ring" aria-hidden="true"></span></span></li><li class="row "><span class="n">08</span><span class="time">1:06–1:09</span><span class="txt"><span class="tt">Вопросы и итоговый опрос</span></span><span class="bar" aria-hidden="true"><i style="width:23%"></i></span><span class="min">3&nbsp;мин</span><span class="st"><span class="ring" aria-hidden="true"></span></span></li><li class="row "><span class="n">09</span><span class="time">1:09–1:10</span><span class="txt"><span class="tt">Следующие шаги</span></span><span class="bar" aria-hidden="true"><i style="width:8%"></i></span><span class="min">1&nbsp;мин</span><span class="st"><span class="ring" aria-hidden="true"></span></span></li></ol>
+</div></div>
+</div>

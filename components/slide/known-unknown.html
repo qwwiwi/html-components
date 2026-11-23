@@ -1,0 +1,61 @@
+<!--
+  component: slide-known-unknown
+  category: slide
+  title_ru: Что знаю и что предполагаю – статусы
+  use_for: Слайд «Честная часть» в презентации или отчёте: девять утверждений в трёх группах по надёжности, у каждого – откуда оно.
+  data_slots: заголовок и счётчик, три статуса, девять утверждений и источников, счётчики групп
+  source: 21st.dev #46640 «Live List», автор ds-spec
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-slide-known-unknown (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-slide-known-unknown-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-slide-known-unknown-root,.hc-slide-known-unknown-root *{box-sizing:border-box}
+.hc-slide-known-unknown-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-slide-known-unknown-root *{min-width:0}
+.hc-slide-known-unknown-root svg{max-width:100%;height:auto}
+.hc-slide-known-unknown-root .mono{font-family:var(--mono)}
+.hc-slide-known-unknown-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-slide-known-unknown-root mark,.hc-slide-known-unknown-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-slide-known-unknown-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-slide-known-unknown-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-slide-known-unknown-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-slide-known-unknown-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-slide-known-unknown-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-slide-known-unknown-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-slide-known-unknown-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-slide-known-unknown-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-slide-known-unknown-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-slide-known-unknown-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-slide-known-unknown-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-slide-known-unknown-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-slide-known-unknown-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-slide-known-unknown{max-width:1100px;margin:0 auto}
+.hc-slide-known-unknown .hd{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.hc-slide-known-unknown .hd .h3{margin:0}
+.hc-slide-known-unknown .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:14px;align-items:start}
+.hc-slide-known-unknown .g{padding:20px 22px}
+.hc-slide-known-unknown .gh{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.hc-slide-known-unknown .chip{display:inline-flex;align-items:center;gap:7px;font:600 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:7px 11px;border-radius:999px;white-space:nowrap}
+.hc-slide-known-unknown .chip.ok{background:var(--ink);color:var(--bg)}
+.hc-slide-known-unknown .chip.part{border:1px solid var(--grey);color:var(--soft)}
+.hc-slide-known-unknown .chip.no{border:1px solid var(--ink);color:var(--ink);box-shadow:0 0 0 3px var(--lime)}
+.hc-slide-known-unknown .cnt{font:600 11px var(--mono);color:var(--grey)}
+.hc-slide-known-unknown ul{list-style:none;margin:0;padding:0}
+.hc-slide-known-unknown li{padding:12px 0;border-top:1px solid var(--sand)}
+.hc-slide-known-unknown li:first-child{border-top:0}
+.hc-slide-known-unknown .it{font-weight:700;font-size:15px;line-height:1.3;letter-spacing:-.01em;overflow-wrap:anywhere}
+.hc-slide-known-unknown .src{margin-top:4px;font:500 11px/1.4 var(--mono);letter-spacing:.02em;color:var(--muted)}
+.hc-slide-known-unknown .src::before{content:"источник: ";color:var(--grey)}
+.hc-slide-known-unknown .no .src::before{content:"почему: "}
+</style>
+<div class="hc-slide-known-unknown-root">
+<div class="hc-slide-known-unknown">
+<div class="hd"><div class="h3">Что я знаю / что предполагаю</div><span class="eyebrow">честная часть · 9 утверждений</span></div>
+<div class="grid"><section class="card g ok"><div class="gh"><span class="chip ok"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3.500 8.500l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>проверено</span><span class="cnt">2</span></div><ul><li><div class="it">тезис: клиент платит за результат, а не за инструмент</div><div class="src">Источник: пример данных</div></li><li><div class="it">целевая маржа 30% → 50%+</div><div class="src">Источник: пример данных</div></li></ul></section><section class="card g part"><div class="gh"><span class="chip part"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="8" cy="8" r="5.500" fill="none" stroke="currentColor" stroke-width="1.800"/><path d="M8 2.500a5.500 5.500 0 0 0 0 11z" fill="currentColor"/></svg>частично</span><span class="cnt">3</span></div><ul><li><div class="it">суммы раундов 2026</div><div class="src">сводка третьей стороны, пример данных</div></li><li><div class="it">Компания А, Компания Б, Компания В</div><div class="src">заявления самих компаний, не аудит</div></li><li><div class="it">профуслуги ≈ 13% ВВП США</div><div class="src">аналитический обзор, по фрагментам</div></li></ul></section><section class="card g no"><div class="gh"><span class="chip no"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M5.800 6.200a2.300 2.300 0 1 1 3.300 2.100c-.7.400-1.100.9-1.100 1.700M8 12.300v.2" fill="none" stroke="currentColor" stroke-width="1.800" stroke-linecap="round"/></svg>не подтверждено</span><span class="cnt">4</span></div><ul><li><div class="it">выручка и маржа Компании А, Б, В</div><div class="src">компании не раскрывают</div></li><li><div class="it">«рынок вырастет в 10 раз»</div><div class="src">первоисточника нет, как факт не использовать</div></li><li><div class="it">«в 2027 дойдёт до новых рынков»</div><div class="src">прогноз автора, мнение</div></li><li><div class="it">доход участников</div><div class="src">никто не гарантирует</div></li></ul></section></div></div>
+</div>

@@ -1,0 +1,73 @@
+<!--
+  component: slide-before-after
+  category: slide
+  title_ru: До / после – копайлот против автопилота
+  use_for: Слайд или раздел лендинга «было / стало»: две панели со списками и полоса из трёх чисел.
+  data_slots: заголовки и списки двух панелей (aria-label тоже), три числа и подписи под ними
+  source: 21st.dev #26826 «Comparison Section», автор mohammadshehadeh
+  license: оригинал на 21st.dev: MIT · Mohammad Shehadeh; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-slide-before-after (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-slide-before-after-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-slide-before-after-root,.hc-slide-before-after-root *{box-sizing:border-box}
+.hc-slide-before-after-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-slide-before-after-root *{min-width:0}
+.hc-slide-before-after-root svg{max-width:100%;height:auto}
+.hc-slide-before-after-root .mono{font-family:var(--mono)}
+.hc-slide-before-after-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-slide-before-after-root mark,.hc-slide-before-after-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-slide-before-after-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-slide-before-after-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-slide-before-after-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-slide-before-after-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-slide-before-after-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-slide-before-after-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-slide-before-after-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-slide-before-after-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-slide-before-after-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-slide-before-after-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-slide-before-after-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-slide-before-after-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-slide-before-after-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-slide-before-after{max-width:1000px;margin:0 auto}
+.hc-slide-before-after .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.hc-slide-before-after .pn{border-radius:18px;padding:clamp(18px,3vw,28px);display:flex;flex-direction:column;gap:16px}
+.hc-slide-before-after .pn h3{margin:0;font-size:clamp(20px,2.6vw,26px);font-weight:800;letter-spacing:-.03em;line-height:1.1}
+.hc-slide-before-after .pn ul{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.hc-slide-before-after .pn li{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid;font-size:15px;line-height:1.35}
+.hc-slide-before-after .pn li:first-child{border-top:0}
+.hc-slide-before-after .ic{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;margin-top:-1px}
+.hc-slide-before-after .old{background:var(--sand);border:1px dashed var(--sand2);color:var(--muted)}
+.hc-slide-before-after .old li{border-color:var(--sand2)}
+.hc-slide-before-after .old li .tx{text-decoration:line-through;text-decoration-thickness:1px;text-decoration-color:var(--grey)}
+.hc-slide-before-after .old .ic{border:1.5px solid var(--grey);color:var(--grey)}
+.hc-slide-before-after .new{background:var(--dark);border:1px solid var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-slide-before-after .new li{border-color:#33332A}
+.hc-slide-before-after .new .ic{background:var(--lime);color:var(--ink)}
+.hc-slide-before-after .new .eyebrow{color:#C9C7B8}
+.hc-slide-before-after .new mark{background:var(--lime);color:var(--ink);padding:0 7px;border-radius:5px}
+.hc-slide-before-after .strip{margin-top:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);overflow:hidden}
+.hc-slide-before-after .st{padding:18px 20px;display:flex;flex-direction:column;gap:6px;border-left:1px solid var(--line)}
+.hc-slide-before-after .st:first-child{border-left:0}
+.hc-slide-before-after .st .num{font-size:clamp(28px,4vw,38px)}
+.hc-slide-before-after .st .eyebrow{text-transform:none;letter-spacing:.01em;font-size:12px;line-height:1.35;font-weight:500}
+@media(max-width:700px){.hc-slide-before-after .st{border-left:0;border-top:1px solid var(--line)}.hc-slide-before-after .st:first-child{border-top:0}}
+</style>
+<div class="hc-slide-before-after-root">
+<div class="hc-slide-before-after">
+<div class="grid">
+<section class="pn old" aria-label="Копайлот"><span class="eyebrow">Было</span><h3>Копайлот – продаёт инструмент</h3><ul><li><span class="ic"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span class="tx">клиент платит за место и токены</span></li><li><span class="ic"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span class="tx">маржа около 30%</span></li><li><span class="ic"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span class="tx">цена «стоимость плюс»</span></li><li><span class="ic"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span class="tx">работа остаётся у клиента</span></li></ul></section>
+<section class="pn new" aria-label="Автопилот"><span class="eyebrow">Стало</span><h3>Автопилот – продаёт <mark>работу</mark></h3><ul><li><span class="ic"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="tx">клиент платит за результат</span></li><li><span class="ic"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="tx">ставка на маржу 50%+</span></li><li><span class="ic"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="tx">цена за результат</span></li><li><span class="ic"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="tx">работу делает сервис, люди остаются в процессе</span></li></ul></section>
+</div>
+<div class="strip" role="list">
+<div class="st" role="listitem"><div class="num">$1&nbsp;:&nbsp;$6</div><div class="eyebrow">на $1 софта – $6 услуг (пример данных)</div></div>
+<div class="st" role="listitem"><div class="num"><mark>30%&nbsp;→&nbsp;50%+</mark></div><div class="eyebrow">маржа: обычная сервисная фирма → AI-сервис (пример данных)</div></div>
+<div class="st" role="listitem"><div class="num">1&nbsp;из&nbsp;7</div><div class="eyebrow">доля софта в расходах на софт и услуги (расчёт из $1 : $6)</div></div>
+</div></div>
+</div>

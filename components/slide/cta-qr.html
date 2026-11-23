@@ -1,0 +1,63 @@
+<!--
+  component: slide-cta-qr
+  category: slide
+  title_ru: Призыв к действию – текст и QR
+  use_for: Финальный слайд презентации: призыв слева, QR-код со ссылкой справа – наводим камеру с экрана.
+  data_slots: метка, заголовок, текст кнопки и ссылка, две ссылки под кнопкой, строка-пояснение, QR-код (заменить на свой), подпись под QR
+  source: 21st.dev #35184 «QR Code», автор kevingirelli
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-slide-cta-qr (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-slide-cta-qr-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-slide-cta-qr-root,.hc-slide-cta-qr-root *{box-sizing:border-box}
+.hc-slide-cta-qr-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-slide-cta-qr-root *{min-width:0}
+.hc-slide-cta-qr-root svg{max-width:100%;height:auto}
+.hc-slide-cta-qr-root .mono{font-family:var(--mono)}
+.hc-slide-cta-qr-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-slide-cta-qr-root mark,.hc-slide-cta-qr-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-slide-cta-qr-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-slide-cta-qr-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-slide-cta-qr-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-slide-cta-qr-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-slide-cta-qr-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-slide-cta-qr-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-slide-cta-qr-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-slide-cta-qr-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-slide-cta-qr-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-slide-cta-qr-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-slide-cta-qr-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-slide-cta-qr-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-slide-cta-qr-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-slide-cta-qr{max-width:1000px;margin:0 auto}
+.hc-slide-cta-qr .card{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(22px,4vw,48px);align-items:center;padding:clamp(22px,4vw,44px)}
+.hc-slide-cta-qr .l{display:flex;flex-direction:column;align-items:flex-start;gap:18px}
+.hc-slide-cta-qr .tag{align-self:flex-start}
+.hc-slide-cta-qr h2{margin:0;font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-.03em;line-height:1.08;text-wrap:balance}
+.hc-slide-cta-qr .btn{white-space:normal;text-align:center}
+.hc-slide-cta-qr .lk{display:flex;flex-wrap:wrap;gap:6px 18px}
+.hc-slide-cta-qr .lk a{font:500 14px var(--mono);color:var(--bg);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:4px;overflow-wrap:anywhere}
+.hc-slide-cta-qr .q{margin:0;font:500 12px/1.4 var(--mono);letter-spacing:.03em;color:#C9C7B8}
+.hc-slide-cta-qr .r{display:flex;justify-content:center}
+.hc-slide-cta-qr .qc{width:100%;max-width:240px;background:#FFFEFA;color:var(--ink);border-radius:18px;padding:14px 14px 16px;display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center}
+.hc-slide-cta-qr .qc .qrw{width:100%;max-width:200px;min-width:150px}
+.hc-slide-cta-qr .qc p{margin:0;font-size:13px;line-height:1.3;font-weight:600;letter-spacing:-.005em}
+@media(max-width:720px){.hc-slide-cta-qr .card{grid-template-columns:minmax(0,1fr)}.hc-slide-cta-qr .btn{display:block;width:100%}}
+</style>
+<div class="hc-slide-cta-qr-root">
+<div class="hc-slide-cta-qr"><div class="card dark">
+<div class="l"><span class="tag">Сообщество · Продукт</span>
+<h2>Строим продукт вместе – <mark style="color:var(--bg)">с партнёрством</mark> и сообществом</h2>
+<a class="btn" href="https://example.com">Начать</a>
+<div class="lk"><a href="https://example.com">example.com</a><a href="https://example.com">example.com/join</a></div>
+<p class="q">уже 120 участников, пример данных</p></div>
+<div class="r"><div class="qc"><div class="qrw"><svg role="img" aria-label="QR-заглушка: https://example.com" style="display:block;width:100%;height:auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29" shape-rendering="crispEdges"><path fill="#FFFEFA" d="M0 0h29v29H0z"/><path fill="#24251E" d="M2 2h7v1h-7zM12 2h1v1h-1zM14 2h1v1h-1zM16 2h1v1h-1zM20 2h7v1h-7zM2 3h1v1h-1zM8 3h1v1h-1zM10 3h3v1h-3zM15 3h2v1h-2zM18 3h1v1h-1zM20 3h1v1h-1zM26 3h1v1h-1zM2 4h1v1h-1zM4 4h3v1h-3zM8 4h1v1h-1zM10 4h2v1h-2zM13 4h1v1h-1zM16 4h1v1h-1zM20 4h1v1h-1zM22 4h3v1h-3zM26 4h1v1h-1zM2 5h1v1h-1zM4 5h3v1h-3zM8 5h1v1h-1zM10 5h3v1h-3zM15 5h1v1h-1zM18 5h1v1h-1zM20 5h1v1h-1zM22 5h3v1h-3zM26 5h1v1h-1zM2 6h1v1h-1zM4 6h3v1h-3zM8 6h1v1h-1zM11 6h2v1h-2zM15 6h1v1h-1zM18 6h1v1h-1zM20 6h1v1h-1zM22 6h3v1h-3zM26 6h1v1h-1zM2 7h1v1h-1zM8 7h1v1h-1zM11 7h1v1h-1zM13 7h1v1h-1zM16 7h1v1h-1zM20 7h1v1h-1zM26 7h1v1h-1zM2 8h7v1h-7zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM18 8h1v1h-1zM20 8h7v1h-7zM10 9h2v1h-2zM16 9h3v1h-3zM2 10h1v1h-1zM8 10h1v1h-1zM10 10h1v1h-1zM14 10h1v1h-1zM19 10h2v1h-2zM23 10h3v1h-3zM3 11h3v1h-3zM7 11h1v1h-1zM11 11h1v1h-1zM13 11h1v1h-1zM15 11h5v1h-5zM21 11h5v1h-5zM2 12h5v1h-5zM8 12h1v1h-1zM10 12h2v1h-2zM15 12h4v1h-4zM21 12h1v1h-1zM23 12h1v1h-1zM25 12h2v1h-2zM2 13h2v1h-2zM6 13h2v1h-2zM10 13h4v1h-4zM15 13h1v1h-1zM18 13h1v1h-1zM20 13h2v1h-2zM23 13h1v1h-1zM26 13h1v1h-1zM5 14h6v1h-6zM12 14h1v1h-1zM14 14h2v1h-2zM17 14h2v1h-2zM20 14h2v1h-2zM26 14h1v1h-1zM2 15h3v1h-3zM6 15h1v1h-1zM10 15h3v1h-3zM17 15h2v1h-2zM21 15h1v1h-1zM25 15h1v1h-1zM2 16h1v1h-1zM8 16h2v1h-2zM12 16h3v1h-3zM17 16h1v1h-1zM20 16h4v1h-4zM25 16h2v1h-2zM2 17h1v1h-1zM4 17h1v1h-1zM6 17h1v1h-1zM9 17h5v1h-5zM19 17h3v1h-3zM23 17h2v1h-2zM26 17h1v1h-1zM2 18h1v1h-1zM4 18h1v1h-1zM7 18h2v1h-2zM10 18h4v1h-4zM18 18h5v1h-5zM24 18h1v1h-1zM10 19h1v1h-1zM14 19h3v1h-3zM18 19h1v1h-1zM22 19h1v1h-1zM2 20h7v1h-7zM12 20h2v1h-2zM18 20h1v1h-1zM20 20h1v1h-1zM22 20h1v1h-1zM26 20h1v1h-1zM2 21h1v1h-1zM8 21h1v1h-1zM14 21h2v1h-2zM17 21h2v1h-2zM22 21h1v1h-1zM25 21h1v1h-1zM2 22h1v1h-1zM4 22h3v1h-3zM8 22h1v1h-1zM11 22h2v1h-2zM14 22h1v1h-1zM16 22h7v1h-7zM24 22h1v1h-1zM26 22h1v1h-1zM2 23h1v1h-1zM4 23h3v1h-3zM8 23h1v1h-1zM11 23h2v1h-2zM16 23h1v1h-1zM18 23h3v1h-3zM25 23h2v1h-2zM2 24h1v1h-1zM4 24h3v1h-3zM8 24h1v1h-1zM11 24h4v1h-4zM17 24h1v1h-1zM23 24h2v1h-2zM26 24h1v1h-1zM2 25h1v1h-1zM8 25h1v1h-1zM11 25h1v1h-1zM13 25h1v1h-1zM16 25h4v1h-4zM21 25h2v1h-2zM26 25h1v1h-1zM2 26h7v1h-7zM10 26h3v1h-3zM15 26h2v1h-2zM18 26h1v1h-1zM20 26h1v1h-1zM23 26h1v1h-1zM26 26h1v1h-1z"/></svg>
+</div><p>Наведите камеру, чтобы открыть страницу</p></div></div>
+</div></div>
+</div>

@@ -1,0 +1,57 @@
+<!--
+  component: slide-testimonial
+  category: slide
+  title_ru: Отзыв участника – по центру
+  use_for: Слайд «Кейс участника» в презентации или блок отзыва на лендинге: один отзыв по центру. Показывать только с согласием участника.
+  data_slots: текст отзыва, инициалы в аватаре, имя, должность и сообщество, сноска-оговорка
+  source: 21st.dev #18931 «Testimonials Five», автор meschacirung
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-slide-testimonial (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-slide-testimonial-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-slide-testimonial-root,.hc-slide-testimonial-root *{box-sizing:border-box}
+.hc-slide-testimonial-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-slide-testimonial-root *{min-width:0}
+.hc-slide-testimonial-root svg{max-width:100%;height:auto}
+.hc-slide-testimonial-root .mono{font-family:var(--mono)}
+.hc-slide-testimonial-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-slide-testimonial-root mark,.hc-slide-testimonial-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-slide-testimonial-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-slide-testimonial-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-slide-testimonial-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-slide-testimonial-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-slide-testimonial-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-slide-testimonial-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-slide-testimonial-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-slide-testimonial-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-slide-testimonial-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-slide-testimonial-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-slide-testimonial-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-slide-testimonial-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-slide-testimonial-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-slide-testimonial{max-width:760px;margin:0 auto}
+.hc-slide-testimonial .card{display:flex;flex-direction:column;align-items:center;text-align:center;gap:20px;padding:clamp(24px,5vw,48px)}
+.hc-slide-testimonial .qi{color:var(--ink)}
+.hc-slide-testimonial blockquote{margin:0;font-size:clamp(20px,3.4vw,28px);font-weight:700;letter-spacing:-.02em;line-height:1.25;overflow-wrap:anywhere}
+.hc-slide-testimonial blockquote span{background:linear-gradient(transparent 62%,var(--lime) 62%);padding:0 2px}
+.hc-slide-testimonial .who{display:flex;flex-direction:column;align-items:center;gap:10px}
+.hc-slide-testimonial .av{width:64px;height:64px;border-radius:50%;background:var(--ink);color:var(--lime);display:grid;place-items:center;font:800 26px var(--sans);letter-spacing:-.04em;box-shadow:0 0 0 4px var(--paper),0 0 0 5px var(--line)}
+.hc-slide-testimonial .nm{font:600 13px/1.3 var(--mono);letter-spacing:.04em;text-transform:uppercase;overflow-wrap:anywhere}
+.hc-slide-testimonial .role{font-size:13px;color:var(--muted)}
+.hc-slide-testimonial .dis{margin-top:4px;padding:10px 14px;border:1px dashed var(--grey);border-radius:12px;font:500 12px/1.4 var(--mono);letter-spacing:.03em;text-transform:uppercase;color:var(--soft)}
+</style>
+<div class="hc-slide-testimonial-root">
+<div class="hc-slide-testimonial"><figure class="card" style="margin-left:auto;margin-right:auto">
+<span class="qi"><svg viewBox="0 0 48 36" width="44" height="33" aria-hidden="true"><path d="M2 20C2 10 7 3 18 1v6c-5 1.5-7.500 4.500-7.500 8H18v20H2zM28 20c0-10 5-17 16-19v6c-5 1.500-7.500 4.500-7.500 8H44v20H28z" fill="currentColor"/></svg></span>
+<blockquote><span>За месяц я собрал первый сервис на агентах и получил трёх платящих клиентов.</span></blockquote>
+<figcaption class="who"><div class="av" aria-hidden="true">ИФ</div>
+<div class="nm">Имя Фамилия</div><div class="role">участник сообщества, Компания А</div></figcaption>
+<div class="dis">* демо-данные · результат участника, не обещание дохода</div>
+</figure></div>
+</div>

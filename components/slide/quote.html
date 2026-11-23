@@ -1,0 +1,54 @@
+<!--
+  component: slide-quote
+  category: slide
+  title_ru: Цитата крупно
+  use_for: Слайд с главной мыслью презентации: цитата во весь экран, под ней подпись автора и короткое пояснение.
+  data_slots: текст цитаты (с выделенной фразой), автор и должность, второстепенная строка-пояснение
+  source: 21st.dev #18912 «Testimonial 2», автор ncdai
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-slide-quote (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-slide-quote-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-slide-quote-root,.hc-slide-quote-root *{box-sizing:border-box}
+.hc-slide-quote-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-slide-quote-root *{min-width:0}
+.hc-slide-quote-root svg{max-width:100%;height:auto}
+.hc-slide-quote-root .mono{font-family:var(--mono)}
+.hc-slide-quote-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-slide-quote-root mark,.hc-slide-quote-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-slide-quote-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-slide-quote-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-slide-quote-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-slide-quote-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-slide-quote-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-slide-quote-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-slide-quote-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-slide-quote-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-slide-quote-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-slide-quote-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-slide-quote-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-slide-quote-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-slide-quote-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-slide-quote{max-width:1000px;margin:0 auto}
+.hc-slide-quote .card{padding:clamp(22px,5vw,52px);display:grid;gap:26px}
+.hc-slide-quote .qi{color:var(--ink)}
+.hc-slide-quote blockquote{margin:0;font-size:clamp(28px,5.4vw,40px);font-weight:800;letter-spacing:-.03em;line-height:1.1;text-wrap:balance}
+.hc-slide-quote .att{font:500 12px/1.5 var(--mono);letter-spacing:.03em;color:var(--muted);overflow-wrap:anywhere}
+.hc-slide-quote .att b{color:var(--ink);font-weight:600}
+.hc-slide-quote .tr{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;padding:16px 18px;border-radius:14px;background:var(--bg);border:1px solid var(--sand)}
+.hc-slide-quote .tr p{margin:0;font-size:clamp(16px,2.4vw,20px);font-weight:600;letter-spacing:-.01em;line-height:1.3;flex:1 1 240px;color:var(--soft)}
+</style>
+<div class="hc-slide-quote-root">
+<div class="hc-slide-quote"><figure class="card" style="margin-left:auto;margin-right:auto">
+<span class="qi"><svg viewBox="0 0 48 36" width="44" height="33" aria-hidden="true"><path d="M2 20C2 10 7 3 18 1v6c-5 1.5-7.500 4.500-7.500 8H18v20H2zM28 20c0-10 5-17 16-19v6c-5 1.500-7.500 4.500-7.500 8H44v20H28z" fill="currentColor"/></svg></span>
+<blockquote>Клиенты платят не за инструмент, а за решённую задачу: <mark>результат важнее функций.</mark></blockquote>
+<figcaption class="att"><b>Имя Фамилия, должность, компания</b></figcaption>
+<div class="tr"><span class="tag line">демо-данные</span><p>Вымышленная цитата для примера оформления.</p></div>
+</figure></div>
+</div>
