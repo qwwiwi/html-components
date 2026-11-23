@@ -1,0 +1,59 @@
+<!--
+  component: diagram-timeline-horizontal
+  category: diagram
+  title_ru: Горизонтальный таймлайн
+  use_for: Три-четыре этапа на линии времени (было / сейчас / прогноз); на телефоне линия становится вертикальной.
+  data_slots: метка времени и подпись каждого этапа, активный этап (class on)
+  source: 21st.dev #28298 «Timeline», автор slide-cn
+  license: оригинал на 21st.dev: лицензия не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-diagram-timeline-horizontal (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-diagram-timeline-horizontal-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-diagram-timeline-horizontal-root,.hc-diagram-timeline-horizontal-root *{box-sizing:border-box}
+.hc-diagram-timeline-horizontal-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-diagram-timeline-horizontal-root *{min-width:0}
+.hc-diagram-timeline-horizontal-root svg{max-width:100%;height:auto}
+.hc-diagram-timeline-horizontal-root .mono{font-family:var(--mono)}
+.hc-diagram-timeline-horizontal-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-diagram-timeline-horizontal-root mark,.hc-diagram-timeline-horizontal-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-diagram-timeline-horizontal-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-diagram-timeline-horizontal-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-diagram-timeline-horizontal-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-diagram-timeline-horizontal-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-diagram-timeline-horizontal-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-diagram-timeline-horizontal-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-diagram-timeline-horizontal-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-diagram-timeline-horizontal-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-diagram-timeline-horizontal-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-diagram-timeline-horizontal-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-diagram-timeline-horizontal-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-diagram-timeline-horizontal-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-diagram-timeline-horizontal-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-diagram-timeline-horizontal{max-width:980px;margin:0 auto}
+.hc-diagram-timeline-horizontal .tl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;position:relative;padding-top:8px}
+.hc-diagram-timeline-horizontal .tl::before{content:"";position:absolute;left:8%;right:8%;top:22px;height:2px;background:var(--ink)}
+.hc-diagram-timeline-horizontal .s{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+.hc-diagram-timeline-horizontal .dot{width:30px;height:30px;border-radius:50%;background:var(--paper);border:2px solid var(--ink);position:relative;z-index:1}
+.hc-diagram-timeline-horizontal .s.on .dot{background:var(--lime)}
+.hc-diagram-timeline-horizontal .when{font-size:clamp(20px,3vw,30px);font-weight:800;letter-spacing:-.03em}
+.hc-diagram-timeline-horizontal .what{font-size:14px;color:var(--soft);max-width:240px}
+@media(max-width:640px){
+.hc-diagram-timeline-horizontal .tl{grid-template-columns:1fr;gap:22px;padding-left:6px}
+.hc-diagram-timeline-horizontal .tl::before{left:21px;right:auto;top:8px;bottom:8px;width:2px;height:auto}
+.hc-diagram-timeline-horizontal .s{flex-direction:row;align-items:flex-start;text-align:left;gap:16px}
+.hc-diagram-timeline-horizontal .s>div:not(.dot){display:flex;flex-direction:column;gap:4px}
+}
+</style>
+<div class="hc-diagram-timeline-horizontal-root">
+<div class="hc-diagram-timeline-horizontal"><div class="card"><div class="tl">
+<div class="s"><div class="dot"></div><div><div class="when">~5 лет</div><div class="what">Раньше: тренд доходил до рынка годами</div></div></div>
+<div class="s"><div class="dot"></div><div><div class="when">квартал-два</div><div class="what">Сейчас: идея приходит почти сразу</div></div></div>
+<div class="s on"><div class="dot"></div><div><div class="when">2027</div><div class="what"><span class="tag" style="padding:4px 10px">прогноз</span> Решение станет стандартом</div></div></div>
+</div></div></div>
+</div>

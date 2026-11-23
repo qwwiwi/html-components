@@ -1,0 +1,60 @@
+<!--
+  component: diagram-roadmap
+  category: diagram
+  title_ru: Дорожная карта – сделано, сейчас, дальше
+  use_for: Слайд или блок лендинга с дорожной картой: что уже сделано, что делать сейчас и что дальше; маркером выделено «сейчас».
+  data_slots: надзаголовок, метка статуса, четыре этапа (название и описание)
+  source: 21st.dev #5652 «Roadmap Card», автор beratberkayg
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-diagram-roadmap (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-diagram-roadmap-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-diagram-roadmap-root,.hc-diagram-roadmap-root *{box-sizing:border-box}
+.hc-diagram-roadmap-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-diagram-roadmap-root *{min-width:0}
+.hc-diagram-roadmap-root svg{max-width:100%;height:auto}
+.hc-diagram-roadmap-root .mono{font-family:var(--mono)}
+.hc-diagram-roadmap-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-diagram-roadmap-root mark,.hc-diagram-roadmap-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-diagram-roadmap-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-diagram-roadmap-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-diagram-roadmap-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-diagram-roadmap-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-diagram-roadmap-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-diagram-roadmap-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-diagram-roadmap-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-diagram-roadmap-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-diagram-roadmap-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-diagram-roadmap-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-diagram-roadmap-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-diagram-roadmap-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-diagram-roadmap-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-diagram-roadmap{max-width:680px;margin:0 auto}
+.hc-diagram-roadmap .hd{display:flex;flex-wrap:wrap;gap:8px 12px;justify-content:space-between;align-items:center;margin-bottom:20px}
+.hc-diagram-roadmap .list{list-style:none;margin:0;padding:0}
+.hc-diagram-roadmap .st{position:relative;display:grid;grid-template-columns:28px minmax(0,1fr);gap:0 14px;padding-bottom:22px}
+.hc-diagram-roadmap .st:last-child{padding-bottom:0}
+.hc-diagram-roadmap .st::before{content:"";position:absolute;left:13px;top:30px;bottom:-2px;width:2px;background:var(--sand2)}
+.hc-diagram-roadmap .st:last-child::before{display:none}
+.hc-diagram-roadmap .ic{width:28px;height:28px;border-radius:50%;border:2px solid var(--ink);background:var(--paper);display:grid;place-items:center;position:relative;z-index:1}
+.hc-diagram-roadmap .st.done .ic{background:var(--ink);color:var(--lime)}
+.hc-diagram-roadmap .st.now .ic{background:var(--lime)}
+.hc-diagram-roadmap .pd{display:block;width:8px;height:8px;border-radius:50%;background:var(--ink)}
+.hc-diagram-roadmap .st.next .ic{border-color:var(--grey)}
+.hc-diagram-roadmap .st.later .ic{border:2px dashed var(--grey)}
+.hc-diagram-roadmap .bd .tag{font-size:11px;padding:5px 9px}
+.hc-diagram-roadmap .t{margin-top:6px;font-size:18px;font-weight:700;letter-spacing:-.02em;line-height:1.2}
+.hc-diagram-roadmap .s{margin-top:4px;font-size:14px;color:var(--soft);overflow-wrap:anywhere}
+.hc-diagram-roadmap .st.later .t,.hc-diagram-roadmap .st.next .t{color:var(--soft)}
+</style>
+<div class="hc-diagram-roadmap-root">
+<div class="hc-diagram-roadmap"><div class="card">
+<div class="hd"><span class="eyebrow">Сообщество · Продукт · Дорожная карта</span><span class="tag line">пример данных</span></div>
+<ol class="list"><li class="st done"><span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div class="bd"><span class="eyebrow">сделано</span><div class="t">12.01 – запуск</div><div class="s">Первая версия продукта: разбор рынка и экономики.</div></div></li><li class="st now"><span class="ic" aria-hidden="true"><i class="pd"></i></span><div class="bd"><span class="tag">сейчас</span><div class="t">Оставить заявку на сайте</div><div class="s">форма заявки: example.com/start</div></div></li><li class="st next"><span class="ic" aria-hidden="true"></span><div class="bd"><span class="eyebrow">дальше</span><div class="t">Вход откроется на следующей неделе</div><div class="s">условия участия появятся в личном кабинете.</div></div></li><li class="st later"><span class="ic" aria-hidden="true"></span><div class="bd"><span class="eyebrow">ближайшие полгода</span><div class="t">Два пути</div><div class="s">сократить расходы бизнеса или продавать услуги.</div></div></li></ol></div></div>
+</div>

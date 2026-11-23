@@ -1,0 +1,62 @@
+<!--
+  component: diagram-timeline-rounds
+  category: diagram
+  title_ru: Таймлайн – раунды 2026 вертикально
+  use_for: Слайд или раздел отчёта о раундах финансирования: шесть раундов по датам с нишей и суммой; самый крупный выделен маркером.
+  data_slots: заголовок и итоговая сумма, шесть строк (дата, компания, ниша, сумма, стадия), сноска-источник
+  source: 21st.dev #28384 «Milestone Timeline», автор olewandowski1
+  license: оригинал на 21st.dev: не указана; код здесь переписан, перед коммерческим использованием проверьте страницу оригинала
+  class prefix: hc-diagram-timeline-rounds (unique; do not rename)
+  how to use: copy this whole file into the page, replace the demo data; fonts optional (fonts.css).
+-->
+<style>
+/* tokens + base, scoped to this component only */
+.hc-diagram-timeline-rounds-root{--bg:#FAF8F2;--paper:#FFFEFA;--line:#D8D7C9;--ink:#24251E;--soft:#4F5147;--muted:#5C6053;
+--lime:#D4FF00;--dark:#15150F;--grey:#8A8D7E;--sand:#E9E7DA;--sand2:#C9C8B8;
+--sans:'Inter Tight',system-ui,-apple-system,'Segoe UI',sans-serif;--mono:'JetBrains Mono',ui-monospace,Menlo,monospace}
+.hc-diagram-timeline-rounds-root,.hc-diagram-timeline-rounds-root *{box-sizing:border-box}
+.hc-diagram-timeline-rounds-root{font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.4;-webkit-font-smoothing:antialiased;min-width:0}
+.hc-diagram-timeline-rounds-root *{min-width:0}
+.hc-diagram-timeline-rounds-root svg{max-width:100%;height:auto}
+.hc-diagram-timeline-rounds-root .mono{font-family:var(--mono)}
+.hc-diagram-timeline-rounds-root .eyebrow{font:600 11px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.hc-diagram-timeline-rounds-root mark,.hc-diagram-timeline-rounds-root .hl{background:linear-gradient(transparent 62%,var(--lime) 62%);color:inherit;padding:0 2px}
+.hc-diagram-timeline-rounds-root .card{background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 14px 40px rgba(10,10,10,.06);padding:24px}
+.hc-diagram-timeline-rounds-root .card.dark{background:var(--dark);border-color:var(--dark);color:var(--bg);box-shadow:0 14px 40px rgba(10,10,10,.18)}
+.hc-diagram-timeline-rounds-root .card.dark .eyebrow{color:#C9C7B8}
+.hc-diagram-timeline-rounds-root .tag{display:inline-block;background:var(--lime);color:var(--ink);font:600 11px/1 var(--mono);letter-spacing:.05em;padding:6px 10px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.hc-diagram-timeline-rounds-root .tag.line{background:transparent;border:1px solid var(--grey);color:var(--soft)}
+.hc-diagram-timeline-rounds-root .tag.dk{background:var(--ink);color:var(--lime)}
+.hc-diagram-timeline-rounds-root .num{font-weight:800;letter-spacing:-.04em;line-height:.95}
+.hc-diagram-timeline-rounds-root .h2{font-size:clamp(26px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.hc-diagram-timeline-rounds-root .h3{font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.02em;line-height:1.15}
+.hc-diagram-timeline-rounds-root .p{font-size:15px;line-height:1.45;color:var(--soft)}
+.hc-diagram-timeline-rounds-root .btn{display:inline-block;background:var(--lime);color:var(--ink);font-weight:700;font-size:16px;padding:13px 22px;border-radius:999px;text-decoration:none;border:0}
+.hc-diagram-timeline-rounds-root .btn.ghost{background:transparent;border:1px solid var(--ink)}
+.hc-diagram-timeline-rounds-root .link{font:500 13px var(--mono);color:var(--ink);text-decoration:underline;text-decoration-color:var(--lime);text-decoration-thickness:3px;text-underline-offset:3px}
+/* component */
+.hc-diagram-timeline-rounds{max-width:760px;margin:0 auto}
+.hc-diagram-timeline-rounds .hd{display:flex;flex-wrap:wrap;gap:8px 12px;justify-content:space-between;align-items:center;margin-bottom:20px}
+.hc-diagram-timeline-rounds .list{list-style:none;margin:0;padding:0}
+.hc-diagram-timeline-rounds .it{position:relative;display:grid;grid-template-columns:28px minmax(0,1fr);gap:0 14px;padding-bottom:22px}
+.hc-diagram-timeline-rounds .it:last-child{padding-bottom:0}
+.hc-diagram-timeline-rounds .it::before{content:"";position:absolute;left:13px;top:22px;bottom:-4px;width:2px;background:var(--sand2)}
+.hc-diagram-timeline-rounds .it:last-child::before{display:none}
+.hc-diagram-timeline-rounds .dot{width:14px;height:14px;margin:4px 7px;border-radius:50%;border:2px solid var(--ink);background:var(--paper);position:relative;z-index:1}
+.hc-diagram-timeline-rounds .it.max .dot{background:var(--lime);width:20px;height:20px;margin:1px 4px}
+.hc-diagram-timeline-rounds .d{margin-bottom:4px}
+.hc-diagram-timeline-rounds .row{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;justify-content:space-between}
+.hc-diagram-timeline-rounds .nm{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center}
+.hc-diagram-timeline-rounds .nm b{font-size:20px;letter-spacing:-.02em;font-weight:700}
+.hc-diagram-timeline-rounds .nm .tag{font-size:11px;padding:5px 9px}
+.hc-diagram-timeline-rounds .amt{font-size:18px;font-weight:600}
+.hc-diagram-timeline-rounds .rd{margin-top:3px;font-size:14px;color:var(--soft)}
+.hc-diagram-timeline-rounds .foot{margin-top:22px;padding-top:14px;border-top:1px solid var(--line);font:500 12px/1.4 var(--mono);color:var(--muted)}
+</style>
+<div class="hc-diagram-timeline-rounds-root">
+<div class="hc-diagram-timeline-rounds"><div class="card">
+<div class="hd"><span class="eyebrow">Раунды финансирования · пример данных</span><span class="tag">$610&nbsp;млн</span></div>
+<ol class="list"><li class="it"><span class="dot" aria-hidden="true"></span><div class="bd"><div class="d eyebrow">5.02.2026</div><div class="row"><div class="nm"><b>Компания А</b><span class="tag line">юр. услуги</span></div><div class="amt mono">$60&nbsp;млн</div></div><div class="rd">Series B</div></div></li><li class="it"><span class="dot" aria-hidden="true"></span><div class="bd"><div class="d eyebrow">31.03.2026</div><div class="row"><div class="nm"><b>Компания Б</b><span class="tag line">юр. услуги</span></div><div class="amt mono">$60&nbsp;млн</div></div><div class="rd">Series B</div></div></li><li class="it"><span class="dot" aria-hidden="true"></span><div class="bd"><div class="d eyebrow">7.04.2026</div><div class="row"><div class="nm"><b>Компания В</b><span class="tag line">налоги и бухгалтерия</span></div><div class="amt mono">$85&nbsp;млн</div></div><div class="rd">раунд – не указан</div></div></li><li class="it"><span class="dot" aria-hidden="true"></span><div class="bd"><div class="d eyebrow">4.05.2026</div><div class="row"><div class="nm"><b>Компания Г</b><span class="tag line">страхование</span></div><div class="amt mono">$125&nbsp;млн</div></div><div class="rd">Series C</div></div></li><li class="it max"><span class="dot" aria-hidden="true"></span><div class="bd"><div class="d eyebrow">7.05.2026</div><div class="row"><div class="nm"><b>Компания Д</b><span class="tag line">страхование</span></div><div class="amt mono">$160&nbsp;млн</div></div><div class="rd">Series B, лидер раунда – фонд А</div></div></li><li class="it"><span class="dot" aria-hidden="true"></span><div class="bd"><div class="d eyebrow">7.07.2026</div><div class="row"><div class="nm"><b>Компания Е</b><span class="tag line">юр. услуги</span></div><div class="amt mono">$120&nbsp;млн</div></div><div class="rd">Series C</div></div></li></ol>
+<div class="foot">шесть раундов, не весь рынок · Источник: пример данных</div>
+</div></div>
+</div>
