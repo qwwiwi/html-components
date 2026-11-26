@@ -40,11 +40,15 @@ if(kind==='line-area'){
   labels.forEach((label,i)=>{
     line(160,111,...point(i,72));
     const [x,y]=point(i,79);
-    textAt(x,y+3,label,{'text-anchor':x<155?'end':x>165?'start':'middle'});
+    const anchor=x<155?'start':x>165?'end':'middle';
+    const width=label.length*8;
+    textAt(x<155?Math.max(10,x-width):x>165?Math.min(310,x+width):x,y+3,label,{'text-anchor':anchor});
   });
   series.forEach(({values},i)=>shape('polygon',{points:values.map((v,j)=>point(j,radius(v))).join(' '),fill:colors[i],'fill-opacity':.18,stroke:colors[i],class:'grow'}));
-  for(const v of [floor,(floor+100)/2,100])
-    textAt(165,119-radius(v),v+'%',{'text-anchor':'start','font-size':10});
+  for(const v of [floor,(floor+100)/2,100]){
+    const [x,y]=point(Math.floor(labels.length/2),radius(v));
+    textAt(x-5,y+3,v+'%',{'text-anchor':'end','font-size':10});
+  }
   finish(222);
 }
 

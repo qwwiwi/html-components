@@ -157,3 +157,76 @@ test('radar renders percentage ticks and bars retain legend values',()=>{
   assert.ok(labels.includes('40%'));
   assert.doesNotMatch(api.renderComponent('bars3d',example('bars3d')).html,/\.bars3d [^{}]*ledger b\{display:none/);
 });
+
+function drawing(kind){
+  const data=example(kind), shapes=[], calls=[];
+  const ctx=new Proxy({measureText:s=>({width:s.length*8})},{
+    get:(target,key)=>target[key]??((...args)=>calls.push([key,...args]))
+  });
+  const node=tag=>({tag,style:{},appendChild(){},getContext:()=>ctx,
+    setAttribute(k,v){this[k]=v}});
+  const document={getElementById:node,createElement:node,createElementNS:(_,tag)=>{
+    const el=node(tag);shapes.push(el);return el;
+  }};
+  const html=api.renderComponent(kind,data).html;
+  runInNewContext(html.match(/<script>(.*?)<\/script>/s)[1],{document,setInterval(){},clearInterval(){}});
+  return {shapes,calls};
+}
+
+test('architecture titles and route pills have clearance',()=>{
+  const {shapes}=drawing('architecture');
+  for(const title of ['Шлюз','Агенты']){
+    const el=shapes.find(s=>s.textContent===title);
+    const zone=shapes.find(s=>s.fill==='var(--zone)' && el.y>s.y && el.y<s.y+s.height);
+    assert.ok(el.y-zone.y>=20,title);
+  }
+  for(const pill of shapes.filter(s=>s.rx===8)){
+    for(const path of shapes.filter(s=>s.tag==='path' && s.fill==='none')){
+      let x,y;
+      for(const [,op,a,b] of path.d.matchAll(/([MHV])([\d.]+)(?: ([\d.]+))?/g)){
+        const nx=op==='V'?x:+a,ny=op==='H'?y:op==='V'?+a:+b;
+        if(op!=='M')assert.ok(Math.max(x,nx)<pill.x-1 || Math.min(x,nx)>pill.x+pill.width+1 ||
+          Math.max(y,ny)<pill.y-1 || Math.min(y,ny)>pill.y+pill.height+1,path.d);
+        x=nx;y=ny;
+      }
+    }
+  }
+});
+
+test('radar ticks stay below the center and left axis has a gutter',()=>{
+  const {shapes}=drawing('radar');
+  assert.ok(shapes.filter(s=>String(s.textContent).endsWith('%')).every(s=>s.y>=111));
+  const left=shapes.find(s=>s.textContent==='Поддержка');
+  assert.ok(left['text-anchor']==='start' && left.x>=9);
+});
+
+test('network captions clear every projected node',()=>{
+  const {calls}=drawing('network3d');
+  const labels=calls.filter(c=>c[0]==='fillText');
+  assert.equal(labels.length,example('network3d').nodes.length);
+  for(const [i,[,s,x,y]] of labels.entries()){
+    for(const [,t,tx,ty] of labels.slice(i+1))
+      assert.ok(Math.abs(x-tx)>=(s.length+t.length)*4+4 || Math.abs(y-ty)>=21,s+' / '+t);
+    for(const [index,[op,ax,ay]] of calls.entries()){
+      if(op!=='moveTo')continue;
+      const [,bx,by]=calls[index+1];
+      for(let step=0;step<=100;step++){
+        const ex=ax+(bx-ax)*step/100,ey=ay+(by-ay)*step/100;
+        assert.ok(Math.abs(x-ex)>s.length*4+2 || ey<y-16 || ey>y+5,s);
+      }
+    }
+  }
+  for(const [,s,x,y] of labels)for(const [,cx,cy,r] of calls.filter(c=>c[0]==='arc')){
+    const dx=Math.max(0,Math.abs(cx-x)-s.length*4),dy=Math.max(0,y-14-cy,cy-y-3);
+    assert.ok(Math.hypot(dx,dy)>=r+2,s);
+  }
+});
+
+test('line legend puts value before cutoff',()=>{
+  assert.match(api.renderComponent('line-area',example('line-area')).html,/Принято<\/span><b>· 45 к 18:00/);
+});
+
+test('rotation control has a 44px minimum height',()=>{
+  for(const n of ['bars3d','network3d'])
+    assert.match(api.renderComponent(n,example(n)).html,/#stage button\{[^}]*min-height:44px/);
+});

@@ -30,8 +30,8 @@ function frame(){
     const depth=bars?0:90*r*Math.sin(i*2.4);
     return {i,x,y,z:depth,p:project(x,y,depth)};
   });
-  if(!bars) for(const {source,target} of data.edges){
-    const a=points[source].p,b=points[target].p;
+  const edges=bars?[]:data.edges.map(e=>[points[e.source].p,points[e.target].p]);
+  for(const [a,b] of edges){
     ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.lineWidth=2;ctx.strokeStyle='#639b8a';ctx.stroke();
   }
   const captions=[];
@@ -62,13 +62,25 @@ function frame(){
     ctx.font='bold 14px sans-serif';
     for(const {i,p} of points.reverse()){
       const value=items[i].label,width=ctx.measureText(value).width;
-      const x=Math.max(width/2+2,Math.min(318-width/2,p.x+(p.x<160?-12:12)));
-      const slots=Array.from({length:10},(_,j)=>17+19*j);
-      for(const y of slots.sort((a,b)=>Math.abs(a-p.y+16)-Math.abs(b-p.y+16))){
-        if(occupied.some(b=>Math.abs(y-b.y)<17 && Math.abs(x-b.x)<(width+b.width)/2+3))continue;
-        label({x,y:y+7},value);
-        occupied.push({x,y,width});break;
+      let best,score=Infinity;
+      for(let y=18;y<=194;y+=7)for(let x=width/2+4;x<=316-width/2;x+=8){
+        const distance=Math.hypot(x-p.x,y-5-p.y);
+        if(distance>=score)continue;
+        const half=width/2+4,cy=y-5,h=13;
+        const overlaps=occupied.some(b=>Math.abs(x-b.x)<half+b.half && Math.abs(cy-b.cy)<2*h);
+        const hitsNode=points.some(({p:q})=>Math.hypot(Math.max(0,Math.abs(x-q.x)-half),
+          Math.max(0,Math.abs(cy-q.y)-h))<9+q.depth/32);
+        // Separating axes for a segment and the padded text rectangle.
+        const crosses=edges.some(([a,b])=>{
+          const dx=b.x-a.x,dy=b.y-a.y;
+          return Math.abs(x-(a.x+b.x)/2)<=half+Math.abs(dx)/2 &&
+            Math.abs(cy-(a.y+b.y)/2)<=h+Math.abs(dy)/2 &&
+            Math.abs(dx*(cy-a.y)-dy*(x-a.x))<=Math.abs(dx)*h+Math.abs(dy)*half;
+        });
+        const cost=distance+(crosses?400:0)+(hitsNode?800:0)+(overlaps?1600:0);
+        if(cost<score){score=cost;best={x,cy,half,y:y+7}}
       }
+      if(best){occupied.push(best);label(best,value)}
     }
   }
 }

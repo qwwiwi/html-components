@@ -29,7 +29,7 @@ export function visualPacks(escape){
         const name=kind==='donut'?'<button aria-pressed="false">'+escape(label)+'</button>':'<span>'+escape(label)+'</span>';
         let metric=value;
         if(kind==='donut') metric=value+' · '+Math.round(100*value/d.items.reduce((sum,v)=>sum+v.value,0))+'%';
-        if(kind==='line-area') metric=d.labels.at(-1)+' · '+d.series[i].values.at(-1);
+        if(kind==='line-area') metric='· '+d.series[i].values.at(-1)+' к '+d.labels.at(-1);
         if(kind==='radar'){
           const scores=d.series[i].values;
           metric='Среднее '+Math.round(scores.reduce((sum,v)=>sum+v,0)/scores.length)+'%';
