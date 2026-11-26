@@ -4,4 +4,5 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 echo "check: ${ROOT}"
+bun test "${ROOT}/telegram/"
 python3 "${ROOT}/scripts/check.py"
