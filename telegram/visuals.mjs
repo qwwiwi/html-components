@@ -28,18 +28,20 @@ export function visualPacks(escape){
       const legend=rows(d).map(([label,value,state],i)=>{
         const name=kind==='donut'?'<button aria-pressed="false">'+escape(label)+'</button>':'<span>'+escape(label)+'</span>';
         let metric=value;
+        if(kind==='donut') metric=value+' · '+Math.round(100*value/d.items.reduce((sum,v)=>sum+v.value,0))+'%';
         if(kind==='line-area') metric=d.labels.at(-1)+' · '+d.series[i].values.at(-1);
         if(kind==='radar'){
           const scores=d.series[i].values;
           metric='Среднее '+Math.round(scores.reduce((sum,v)=>sum+v,0)/scores.length)+'%';
         }
-        return '<li class="'+(state??'')+'">'+(d.series||kind==='donut'?'<i style="background:'+colors[i]+'"></i>':'')+name+'<b>'+escape(metric)+'</b></li>';
+        return '<li class="'+(state??'')+'">'+(d.series||kind==='donut'||kind==='bars3d'?'<i style="background:'+colors[i]+'"></i>':'')+name+'<b>'+escape(metric)+'</b></li>';
       }).join('');
       // Keep axis/value pairs available even when SVG or JavaScript is unavailable.
       const matrix=d.series?'<table id="matrix"><thead><tr><td></td>'+d.series.map(s=>'<th>'+escape(s.label)+'</th>').join('')+
         '</tr></thead><tbody>'+d.labels.map((label,i)=>'<tr><th>'+escape(label)+'</th>'+d.series.map(s=>'<td>'+s.values[i]+'</td>').join('')+'</tr>').join('')+'</tbody></table>':'';
       const json=JSON.stringify(d).replace(/</g,'\\u003c');
-      return '<div id="stage"></div><ol class="ledger">'+legend+'</ol>'+matrix+(source?'<script>(()=>{const kind='+JSON.stringify(kind)+',data='+json+';'+source+'})();</script>':'');
+      const summary=d.nodes?d.nodes.length+' узлов · '+d.edges.length+' связей':'';
+      return '<div id="stage"></div>'+(summary?'<div class="summary">'+summary+'</div>':'')+'<ol class="ledger">'+legend+'</ol>'+matrix+(source?'<script>(()=>{const kind='+JSON.stringify(kind)+',data='+json+';'+source+'})();</script>':'');
     }
   }]));
 }

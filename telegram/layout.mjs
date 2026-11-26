@@ -47,8 +47,10 @@ export function layoutFor(name,d,template){
   if(template.visual){
     const entries=(d.nodes??d.series??d.items).length;
     const road=name==='timeline-roadmap';
-    const plot=d.series?Math.max(220,(d.labels.length+1)*23):220;
-    return {height:60+(road?0:plot)+entries*(road?48:31),omitted:0};
+    const heading=28+26*lines(d.title,22);
+    const legendRows=d.nodes?1:Math.ceil(entries/2);
+    const plot=name==='donut'||name==='line-area'?173:name.endsWith('3d')?188:name==='radar'?209:240;
+    return {height:heading+6+(road?48*entries:plot+22*legendRows),omitted:0};
   }
   const height=legacyHeight(name,d);
   if(height<=600)return {height,omitted:0};

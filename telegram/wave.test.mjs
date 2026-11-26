@@ -102,7 +102,7 @@ test('embedded programs draw and handle taps with DOM and canvas test doubles',(
       tag,namespaceURI:ns,children:[],attrs:{},style:{},
       appendChild(child){this.children.push(child)},
       setAttribute(k,v){this.attrs[k]=v},getAttribute(k){return this.attrs[k]},
-      getContext(){return new Proxy({},{get:()=>()=>{}})}
+      getContext(){return new Proxy({},{get:(_,key)=>key==='measureText'?text=>({width:text.length*8}):()=>{}})}
     });
     const stage=node(),matrix=node(),buttons=(data.items??[]).map(()=>node());
     let tick;
@@ -136,5 +136,15 @@ test('legacy nested values remain inert in rich layouts and previews',()=>{
     const {html,caption}=api.renderComponent(name,d);
     assert.ok(html.includes('&lt;b&gt;&amp;&quot;') && !html.includes(input),name);
     assert.ok(caption.includes(input),name);
+  }
+});
+
+test('wave titles wrap and enhanced example heights fit 360px',()=>{
+  for(const name of names){
+    const d=example(name),{html}=api.renderComponent(name,d);
+    const headingRules=[...html.matchAll(/([^{}]*\bh1\b[^{}]*)\{([^{}]*)\}/g)];
+    for(const [,selector,style] of headingRules)
+      assert.doesNotMatch(style,/text-overflow|nowrap|line-clamp/,selector);
+    assert.ok(api.widgetLayout(name,d).height<=360,name);
   }
 });

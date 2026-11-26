@@ -4,7 +4,8 @@ const ctx=canvas.getContext('2d');
 if(!ctx) return;
 ctx.scale(2,2);
 const bars=kind==='bars3d',items=bars?data.items:data.nodes;
-let angle=-.62,timer;
+const colors=['#d4ff00','#80c9ef','#ffa77f','#b4a3fa','#81d8b0','#f1bb64','#ed96bf','#c8d1cc'];
+let angle=-.62,timer,phase=0;
 function project(x,y,z){
   const depth=x*Math.sin(angle)+z*Math.cos(angle);
   const side=x*Math.cos(angle)-z*Math.sin(angle),scale=230/(240-depth*.45);
@@ -16,7 +17,7 @@ function face(points,color){
   ctx.closePath();ctx.fillStyle=color;ctx.fill();
 }
 function label(p,value){
-  ctx.fillStyle='#faf8f2';ctx.font='bold 11px sans-serif';ctx.textAlign='center';
+  ctx.fillStyle='#faf8f2';ctx.font='bold 14px sans-serif';ctx.textAlign='center';
   ctx.fillText(String(value),p.x,p.y-7);
 }
 function frame(){
@@ -44,12 +45,26 @@ function frame(){
         return {depth:bottom[j].depth+bottom[k].depth,points:[bottom[j],bottom[k],top[k],top[j]],color:j%2?'#88a824':'#526f37'};
       });
       for(const side of sides.sort((a,b)=>a.depth-b.depth)) face(side.points,side.color);
-      face(top,'#d4ff00');label(project(x,h,z),items[i].value);
-      label({...p,y:p.y+22},i+1);
+      face(top,colors[i]);label(project(x,h,z),items[i].value);
+
     }else{
       ctx.globalAlpha=.68+(p.depth+90)/560;
-      ctx.beginPath();ctx.arc(p.x,p.y,7*p.scale,0,2*Math.PI);ctx.fillStyle=i?'#8ecfc2':'#d4ff00';ctx.fill();
-      label({...p,y:p.y-4},items[i].label);ctx.globalAlpha=1;
+      ctx.beginPath();ctx.arc(p.x,p.y,5+(p.depth+100)/30,0,2*Math.PI);ctx.fillStyle=i?'#8ecfc2':'#d4ff00';ctx.fill();
+      ctx.globalAlpha=1;
+    }
+  }
+  if(!bars){
+    const occupied=[];
+    ctx.font='bold 14px sans-serif';
+    for(const {i,p} of points.reverse()){
+      const value=items[i].label,width=ctx.measureText(value).width;
+      const x=Math.max(width/2+2,Math.min(318-width/2,p.x+(p.x<160?-12:12)));
+      for(const offset of [-14,24,-32,42]){
+        const y=p.y+offset;
+        if(y<15||y>177||occupied.some(b=>Math.abs(y-b.y)<17 && Math.abs(x-b.x)<(width+b.width)/2+3))continue;
+        label({x,y:y+7},value);
+        occupied.push({x,y,width});break;
+      }
     }
   }
 }
@@ -57,7 +72,7 @@ frame();stage.appendChild(canvas);
 const toggle=document.createElement('button');
 function rotation(on){
   clearInterval(timer);
-  if(on) timer=setInterval(()=>{angle+=.009;frame()},75);
+  if(on) timer=setInterval(()=>{phase+=.009;angle=bars?-.42+.2*Math.sin(phase-Math.PI/2):angle+.009;frame()},75);
   toggle.textContent=on?'Пауза':'Вращать';
   toggle.setAttribute('aria-pressed',String(on));
 }
