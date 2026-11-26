@@ -61,3 +61,24 @@ for (const name of ['widgets', 'status']) {
     assert.doesNotMatch(css, /text-overflow\s*:\s*ellipsis|white-space\s*:\s*nowrap|(?:-webkit-)?line-clamp\s*:/i);
   });
 }
+
+const widgetStyles = readFileSync(new URL('./widgets.css', import.meta.url), 'utf8');
+const statusStyles = readFileSync(new URL('./status.css', import.meta.url), 'utf8');
+
+test('compare gives the label extra width and aligns value columns', () => {
+  assert.match(widgetStyles, /th:first-child,td:first-child\s*\{[^}]*width:48%/);
+  assert.match(widgetStyles, /th:not\(:first-child\),td:not\(:first-child\)\s*\{[^}]*text-align:right/);
+});
+
+test('status uses readable type and a separate running-state accent', () => {
+  const sizes = [...statusStyles.matchAll(/font-size:\s*(\d+)px/g)];
+  assert.ok(sizes.every(([,px]) => Number(px) >= 12));
+  assert.match(statusStyles, /\.s-r \.bar i\{background:#f4511e\}/i);
+  assert.match(statusStyles, /linear-gradient\(to right,#d4ff00/i);
+});
+
+test('dark mode distinguishes the step badge and featured KPI tile', () => {
+  const dark = widgetStyles.split('@media(prefers-color-scheme:dark)')[1].split('\n}')[0];
+  assert.match(dark, /\.steps li:before\{[^}]*background:var\(--lime\)/);
+  assert.match(dark, /\.grid section:first-child\{[^}]*border-color:var\(--lime\)/);
+});
