@@ -1,13 +1,13 @@
 {
-  "title": "Workshop questions",
+  "title": "Вопросы о занятиях",
   "items": [
     {
-      "question": "What should I bring?",
-      "answer": "Bring your notebook."
+      "question": "Что взять с собой?",
+      "answer": "Возьмите тетрадь."
     },
     {
-      "question": "Can I join remotely?",
-      "answer": "Remote seats are available."
+      "question": "Можно участвовать удалённо?",
+      "answer": "Да, есть онлайн-группа."
     }
   ]
 }

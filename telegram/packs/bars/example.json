@@ -1,12 +1,12 @@
 {
-  "title": "Completion by group",
+  "title": "Результаты групп",
   "rows": [
     {
-      "label": "Group A",
+      "label": "Группа А",
       "value": 80
     },
     {
-      "label": "Group B",
+      "label": "Группа Б",
       "value": 65
     }
   ]

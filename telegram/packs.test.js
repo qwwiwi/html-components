@@ -8,11 +8,13 @@ for (const name of ['kpi','bars','progress','steps','compare','pros-cons','faq',
   test(name + ' schema, escaping, caption and budgets', () => {
     const data = JSON.parse(readFileSync(new URL('./packs/'+name+'/example.json', import.meta.url)));
     assert.equal(renderComponent(name, {}).error.code, 'INVALID_DATA');
-    data.title = '<svg>&"';
+    const input = '<svg>&"';
+    if (name === 'status') data.m[0][0] = input;
+    else data.title = input;
     const {html, caption} = renderComponent(name, data, {chatData:true});
     assert.ok(html.includes('&lt;svg&gt;&amp;&quot;'));
-    assert.ok(!html.includes(data.title));
-    assert.ok(caption.includes(data.title) && caption.length <= 1024);
+    assert.ok(!html.includes(input));
+    assert.ok(caption.includes(input) && caption.length <= 1024);
     assert.ok(Buffer.byteLength(html) <= 32768 && deflateSync(html,{level:9}).length <= 4096);
   });
 }
@@ -32,4 +34,23 @@ test('long FAQ fallback truncates without splitting a surrogate pair', () => {
   const {caption} = renderComponent('faq',data);
   assert.ok(caption.endsWith('…') && caption.length <= 1024);
   assert.equal(Buffer.from(caption).toString(),caption);
+});
+
+test('pros-cons defaults and optional headings reach HTML and caption', () => {
+  const data = {title:'Выбор',pros:['Быстро'],cons:['Дорого']};
+  for (const labels of [{}, {prosLabel:'За & ещё',consLabel:'Против'}]) {
+    const {html,caption} = renderComponent('pros-cons',{...data,...labels});
+    assert.match(html, labels.prosLabel ? /За &amp; ещё/ : /Плюсы/);
+    assert.ok(caption.includes(labels.prosLabel ?? 'Плюсы'));
+    assert.ok(html.includes(labels.consLabel ?? 'Минусы'));
+    assert.ok(caption.includes(labels.consLabel ?? 'Минусы'));
+  }
+});
+
+test('status renders compact groups, jobs, details and overflow', () => {
+  const data = {m:[['Группа',Array(9).fill(['Этап',105])]],j:[['Тест',31.6,'r',{m:'local',t:0,s:'Сверка',r:'Готово'}],['Сборка',0,'q']],l:'Лимит'};
+  const {html,caption} = renderComponent('status',data);
+  for (const text of ['Группа','+1','100%','32%','local','Минут: 0','Сверка','Готово','Сборка','Лимит']) assert.ok(html?.includes(text),text);
+  assert.ok(caption.includes('Готово'));
+  assert.ok(!html.includes('<script'));
 });

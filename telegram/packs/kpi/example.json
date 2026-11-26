@@ -1,12 +1,12 @@
 {
-  "title": "Workshop totals",
+  "title": "Итоги практикума",
   "metrics": [
     {
-      "label": "Sessions",
+      "label": "Занятий",
       "value": 12
     },
     {
-      "label": "Participants",
+      "label": "Участников",
       "value": 48
     }
   ]
