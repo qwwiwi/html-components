@@ -58,12 +58,22 @@ test('status renders compact groups, jobs and details within row limits', () => 
 for (const name of ['widgets', 'status']) {
   test(name + ' CSS allows full text to wrap', () => {
     const css = readFileSync(new URL('./' + name + '.css', import.meta.url), 'utf8');
-    assert.doesNotMatch(css, /text-overflow\s*:\s*ellipsis|white-space\s*:\s*nowrap|(?:-webkit-)?line-clamp\s*:/i);
+    const wrappingRules = name === 'status'
+      ? css.replace(/(^|})\s*\.pct\s*\{[^}]*\}/g, '$1')
+      : css;
+    assert.doesNotMatch(css, /text-overflow\s*:\s*ellipsis|(?:-webkit-)?line-clamp\s*:/i);
+    assert.doesNotMatch(wrappingRules, /white-space\s*:\s*nowrap/i);
   });
 }
 
 const widgetStyles = readFileSync(new URL('./widgets.css', import.meta.url), 'utf8');
 const statusStyles = readFileSync(new URL('./status.css', import.meta.url), 'utf8');
+
+test('status percentage reserves intrinsic width for 100% on one line', () => {
+  const rule = statusStyles.match(/(?:^|})\s*\.pct\s*\{([^}]*)\}/)?.[1] ?? '';
+  assert.match(rule, /(?:^|;)\s*white-space:\s*nowrap\s*(?:;|$)/);
+  assert.match(rule, /(?:^|;)\s*min-width:\s*max-content\s*(?:;|$)/);
+});
 
 test('compare gives the label extra width and aligns value columns', () => {
   assert.match(widgetStyles, /th:first-child,td:first-child\s*\{[^}]*width:48%/);
