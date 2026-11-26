@@ -251,3 +251,28 @@ test('rotation control has a 44px minimum height',()=>{
   for(const n of ['bars3d','network3d'])
     assert.match(api.renderComponent(n,example(n)).html,/#stage button\{[^}]*min-height:44px/);
 });
+
+test('network3d falls back to its static ledger on HTML_LIMIT',()=>{
+  const label=(offset,length)=>Array.from({length},(_,i)=>
+    String.fromCodePoint(0x20000+(offset+i)*137)).join('');
+  const data={
+    title:label(0,48),
+    nodes:Array.from({length:8},(_,i)=>({label:label(48+i*18,18)})),
+    edges:Array.from({length:12},(_,i)=>({source:i%8,target:(i+1)%8}))
+  };
+  assert.ok(api.validate('network3d',data));
+  const result=api.renderComponent('network3d',data);
+  assert.equal(result.variant,'static');
+  assert.doesNotMatch(result.html,/<script\b/);
+  for(const node of data.nodes) assert.ok(result.html.includes(node.label));
+  assert.equal(api.budgetError(result.html,0),undefined);
+});
+
+test('inline scripts escape Unicode line and paragraph separators',()=>{
+  const data={title:'T',nodes:[{label:'A'},{label:'B'}],edges:[{source:0,target:1}]};
+  data.nodes[0].label='a\u2028b\u2029c</script>';
+  const {html}=api.renderComponent('network3d',data);
+  const script=html.match(/<script>([\s\S]*?)<\/script>/)[1];
+  assert.equal(/[\u2028\u2029]/.test(script),false);
+  assert.ok(script.includes('a\\u2028b\\u2029c\\u003c/script>'));
+});
