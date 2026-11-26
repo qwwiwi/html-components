@@ -22,16 +22,14 @@ for (const name of ['kpi','bars','progress','steps','compare','pros-cons','faq',
 test('compare enforces rectangular rows and encoded chat data budget', () => {
   const data = {title:'Comparison', columns:['A','B','C'], rows:[['short']]};
   assert.equal(renderComponent('compare',data).error.code,'INVALID_DATA');
-  data.rows = Array.from({length:6}, () => Array(3).fill('界'.repeat(30)));
+  data.rows = Array.from({length:4}, () => Array(3).fill('界'.repeat(30)));
   assert.equal(renderComponent('compare',data,{chatData:true}).error.code,'CHAT_DATA_LIMIT');
   assert.ok(renderComponent('compare',data).html);
 });
 
-test('long FAQ fallback truncates without splitting a surrogate pair', () => {
+test('long status fallback truncates without splitting a surrogate pair', () => {
   const text = '𐐷';
-  const item = {question:text.repeat(64),answer:text.repeat(120)};
-  const data = {title:'FAQ',items:Array(4).fill(item)};
-  const {caption} = renderComponent('faq',data);
+  const {caption} = renderComponent('status',{m:[],j:[],l:text.repeat(520)});
   assert.ok(caption.endsWith('…') && caption.length <= 1024);
   assert.equal(Buffer.from(caption).toString(),caption);
 });
@@ -47,10 +45,19 @@ test('pros-cons defaults and optional headings reach HTML and caption', () => {
   }
 });
 
-test('status renders compact groups, jobs, details and overflow', () => {
-  const data = {m:[['Группа',Array(9).fill(['Этап',105])]],j:[['Тест',31.6,'r',{m:'local',t:0,s:'Сверка',r:'Готово'}],['Сборка',0,'q']],l:'Лимит'};
+test('status renders compact groups, jobs and details within row limits', () => {
+  const data = {m:[['Группа',Array(4).fill(['Этап',105])]],j:[['Тест',31.6,'r',{m:'local',t:0,s:'Сверка',r:'Готово'}],['Сборка',0,'q']],l:'Лимит'};
   const {html,caption} = renderComponent('status',data);
-  for (const text of ['Группа','+1','100%','32%','local','Минут: 0','Сверка','Готово','Сборка','Лимит']) assert.ok(html?.includes(text),text);
+  for (const text of ['Группа','100%','32%','local','Минут: 0','Сверка','Готово','Сборка','Лимит']) assert.ok(html?.includes(text),text);
   assert.ok(caption.includes('Готово'));
   assert.ok(!html.includes('<script'));
+  data.m[0][1].push(['Ещё',0]);
+  assert.equal(renderComponent('status',data).error.code,'INVALID_DATA');
 });
+
+for (const name of ['widgets', 'status']) {
+  test(name + ' CSS allows full text to wrap', () => {
+    const css = readFileSync(new URL('./' + name + '.css', import.meta.url), 'utf8');
+    assert.doesNotMatch(css, /text-overflow\s*:\s*ellipsis|white-space\s*:\s*nowrap|(?:-webkit-)?line-clamp\s*:/i);
+  });
+}

@@ -29,7 +29,7 @@
         "maxItems": 3
       },
       "minItems": 1,
-      "maxItems": 6
+      "maxItems": 4
     }
   },
   "required": [

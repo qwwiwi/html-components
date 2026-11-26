@@ -25,12 +25,14 @@
                   ],
                   "minItems": 2,
                   "maxItems": 2
-                }
+                },
+                "maxItems": 4
               }
             ],
             "minItems": 2,
             "maxItems": 2
-          }
+          },
+          "maxItems": 2
         },
         "j": {
           "type": "array",
@@ -74,7 +76,8 @@
             ],
             "minItems": 3,
             "maxItems": 4
-          }
+          },
+          "maxItems": 3
         },
         "l": {
           "type": "string"

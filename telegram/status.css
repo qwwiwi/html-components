@@ -1,18 +1,17 @@
 *{box-sizing:border-box}
-:root{color-scheme:light;background:#fff;color:#242321;font-family:system-ui}
+:root{hyphens:auto;overflow-wrap:anywhere;color-scheme:light;background:#fff;color:#242321;font-family:system-ui}
 body{margin:0;padding:8px;background:#fff;font:13px/16px system-ui}
 .card{padding:6px 8px;margin-bottom:6px;border:1px solid #dedcd9;background:#fff;border-radius:0;min-width:0}
 h2{margin:0 0 4px;font-size:11px;line-height:14px;font-weight:500;letter-spacing:.04em;color:#777571}
-.cut{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cut{min-width:0}
 .row,.top{display:flex;align-items:center;gap:6px;min-width:0}
-.row{height:12px;font-size:11px;line-height:12px}
+.row{min-height:12px;font-size:11px;line-height:12px}
 .name{flex:1;min-width:0}
 .pct{flex:none;width:32px;text-align:right;font-size:11px;font-weight:500}
 .cells{width:58px;height:4px;flex:none;background:#dedcd9}
 .job{min-height:20px;cursor:pointer}
 .step,.detail{font-size:10px;line-height:12px;color:#777571}
 .detail{padding:2px 0 4px}
-.detail .cut{height:12px}
 .state{flex:none;color:#777571;font-size:10px}
 .bar{height:3px;background:#dedcd9;margin-top:1px}
 .bar i{display:block;height:100%;background:#f4511e}

@@ -14,7 +14,7 @@
         "maxLength": 64
       },
       "minItems": 1,
-      "maxItems": 6
+      "maxItems": 5
     }
   },
   "required": [

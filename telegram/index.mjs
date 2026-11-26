@@ -42,9 +42,9 @@ export function renderComponent(name, data, {chatData=false}={}) {
   if (!validate(name,data)) return failure('INVALID_DATA');
   if (chatData && Buffer.byteLength(JSON.stringify(data)) > 1024) return failure('CHAT_DATA_LIMIT');
   const template = templates[name];
-  const html = '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'+
+  const html = '<!doctype html><html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'+
     '<style>'+(name === 'status' && data.m ? statusCss : css)+'</style><main class="'+name+'">'+
-    (data.title ? '<h1>'+escape(data.title)+'</h1>' : '')+template.body(data)+'</main>';
+    (data.title ? '<h1>'+escape(data.title)+'</h1>' : '')+template.body(data)+'</main></html>';
   if (Buffer.byteLength(html) > 32768 || deflateSync(html,{level:9}).length > 4096) return failure('HTML_LIMIT');
   let caption = [data.title,template.caption(data)].filter(Boolean).join('\n');
   if (caption.length > 1024) caption = caption.slice(0,1023).replace(/[\uD800-\uDBFF]$/,'')+'…';

@@ -12,14 +12,13 @@ export function statusPack(escape) {
   function group([title,rows]) {
     const mean = rows.length ? Math.round(rows.reduce((sum,row) => sum+percent(row[1]),0)/rows.length) : 0;
     const summary = '<span class="mean"> · '+mean+'%</span>';
-    const extra = rows.length > 8 ? ' +'+(rows.length-8) : '';
-    const lines = rows.slice(0,8).map(([name,value]) => {
+    const lines = rows.map(([name,value]) => {
       const p = percent(value);
       const stop = Math.max(0,Math.round(p/20)*12-2);
       return '<div class="row"><span class="name cut">'+escape(label(name,'Без названия'))+'</span>'+
         '<i class="cells" style="--stop:'+stop+'px"></i><b class="pct">'+p+'%</b></div>';
     });
-    return card(escape(label(title,'Этапы'))+summary+extra,'<div class="rows">'+(lines.join('') || 'нет данных')+'</div>');
+    return card(escape(label(title,'Этапы'))+summary,'<div class="rows">'+(lines.join('') || 'нет данных')+'</div>');
   }
   function job([name,value,state,details],active) {
     const p = percent(value);
@@ -34,10 +33,9 @@ export function statusPack(escape) {
     body(d) {
       if (!d.m) return '<section><strong>'+cut(d.state)+'</strong><p>'+escape(d.detail)+'</p></section>';
       const active = d.j.findIndex(j => j[2] === 'r');
-      const jobs = d.j.slice(0,5).map((j,i) => job(j,i === active)).join('');
-      const hidden = Math.max(0,d.m.length-3)+Math.max(0,d.j.length-5);
-      const footer = [hidden && '+'+hidden,label(d.l,'')].filter(Boolean).join(' · ');
-      return d.m.slice(0,3).map(group).join('')+(jobs ? card('Задачи',jobs) : '')+
+      const jobs = d.j.map((j,i) => job(j,i === active)).join('');
+      const footer = label(d.l,'');
+      return d.m.map(group).join('')+(jobs ? card('Задачи',jobs) : '')+
         (!d.m.length && !jobs ? '<div class="empty">нет данных</div>' : '')+
         (footer ? '<footer class="foot cut">'+escape(footer)+'</footer>' : '');
     },
