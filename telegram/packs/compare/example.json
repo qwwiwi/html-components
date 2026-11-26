@@ -1,0 +1,20 @@
+{
+  "title": "Plan comparison",
+  "columns": [
+    "Plan",
+    "Sessions",
+    "Seats"
+  ],
+  "rows": [
+    [
+      "Small",
+      "4",
+      "12"
+    ],
+    [
+      "Large",
+      "8",
+      "24"
+    ]
+  ]
+}

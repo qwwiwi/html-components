@@ -1,0 +1,13 @@
+{
+  "title": "Completion by group",
+  "rows": [
+    {
+      "label": "Group A",
+      "value": 80
+    },
+    {
+      "label": "Group B",
+      "value": 65
+    }
+  ]
+}

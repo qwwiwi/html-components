@@ -1,0 +1,26 @@
+{
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 48
+    },
+    "state": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 32
+    },
+    "detail": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 96
+    }
+  },
+  "required": [
+    "title",
+    "state",
+    "detail"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,13 @@
+{
+  "title": "Workshop totals",
+  "metrics": [
+    {
+      "label": "Sessions",
+      "value": 12
+    },
+    {
+      "label": "Participants",
+      "value": 48
+    }
+  ]
+}
