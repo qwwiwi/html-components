@@ -48,8 +48,8 @@ export function layoutFor(name,d,template){
     const entries=(d.nodes??d.series??d.items).length;
     const road=name==='timeline-roadmap';
     const heading=28+26*lines(d.title,22);
-    const legendRows=d.nodes?1:Math.ceil(entries/2);
-    const plot=name==='donut'||name==='line-area'?173:name.endsWith('3d')?188:name==='radar'?209:240;
+    const legendRows=d.nodes?1:name==='radar'?entries:Math.ceil(entries/2);
+    const plot=name==='donut'||name==='line-area'?173:name.endsWith('3d')?214:name==='radar'?209:240;
     return {height:heading+6+(road?48*entries:plot+22*legendRows),omitted:0};
   }
   const height=legacyHeight(name,d);

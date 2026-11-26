@@ -7,12 +7,12 @@ const groups=[...new Set(nodes.map((n,i)=>flow?ranks[i]:n.lane))];
 if(flow) groups.sort((a,b)=>a-b);
 const points=[];
 let y=0;
-for(const [g,key] of groups.entries()){
+for(const key of groups){
   const members=nodes.map((n,i)=>i).filter(i=>(flow?ranks[i]:nodes[i].lane)===key);
-  const rowHeight=flow?46:72;
+  const rowHeight=flow?46:80;
   if(!flow){
-    shape('rect',{x:4,y:y+2,width:312,height:68,rx:7,fill:g%2?'#262f29':'#303730'});
-    textAt(11,y+16,key,{'text-anchor':'start',fill:'#b6c6ac'});
+    shape('rect',{x:4,y:y+2,width:312,height:78,rx:7,fill:'var(--zone)'});
+    textAt(11,y+16,key,{'text-anchor':'start',fill:'var(--ink)','font-size':15,'font-weight':650});
   }
   members.forEach((i,j)=>points[i]={x:320*(j+.5)/members.length,y:y+(flow?23:42),w:Math.min(112,280/members.length-4)});
   y+=rowHeight;
@@ -25,27 +25,32 @@ for(const [i,{source,target,label}] of edges.entries()){
   let angle=Math.atan2(dy,dx)*180/Math.PI;
   if(flow) line(a.x,a.y,end.x,end.y,{...attrs,class:'dash'});
   else{
-    const side=Math.abs(dy)>72;
-    const bend=side?312:dy?a.y+Math.sign(dy)*32:a.y;
-    const lx=side?bend-22:(a.x+b.x)/2,ly=side?a.y+Math.sign(dy)*28:bend;
+    const side=Math.abs(dy)>80;
+    const middleY=(a.y+b.y)/2;
+    const laneTop=Math.floor(middleY/80)*80;
+    const ly=dy && !side?Math.round(middleY/80)*80-12:laneTop+18;
+    const bend=side?311:ly;
+
     let path;
     if(side){
       end.x=b.x+b.w/2;end.y=b.y;angle=180;
       path='M'+a.x+' '+a.y+'H'+bend+'V'+b.y+'H'+end.x;
-    }else if(dy){
-      end.x=b.x;end.y=b.y-Math.sign(dy)*14;angle=Math.sign(dy)*90;
+    }else{
+      end.x=b.x;const direction=Math.sign(b.y-bend);
+      end.y=b.y-direction*14;angle=direction*90;
       path='M'+a.x+' '+a.y+'V'+bend+'H'+b.x+'V'+end.y;
-    }else path='M'+a.x+' '+a.y+'H'+end.x;
+    }
     shape('path',{d:path,fill:'none',...attrs});
     const width=label.length*8+8;
-    shape('rect',{x:lx-width/2,y:ly-9,width,height:18,rx:8,fill:'#394638'});
+    const lx=Math.max(9+width/2,Math.min(311-width/2,side?bend:(a.x+b.x)/2));
+    shape('rect',{x:lx-width/2,y:ly-9,width,height:18,rx:8,fill:'var(--panel)'});
     textAt(lx,ly+4,label,{'font-size':12});
   }
   shape('path',{d:'M0 0l-6 -3v6z',fill:attrs.stroke,transform:'translate('+end.x+' '+end.y+') rotate('+angle+')'});
 
 }
 nodes.forEach((n,i)=>{
-  const {x,y,w}=points[i],attrs={stroke:colors[i%3],fill:'#202820'};
+  const {x,y,w}=points[i],attrs={stroke:colors[i%3],fill:'var(--panel)'};
   if(n.kind==='decision') shape('polygon',{points:[[x-w/2,y],[x,y-15],[x+w/2,y],[x,y+15]].join(' '),...attrs});
   else shape('rect',{x:x-w/2,y:y-14,width:w,height:28,rx:7,...attrs});
   textAt(x,y+5,n.label);

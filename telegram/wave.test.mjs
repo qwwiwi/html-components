@@ -148,3 +148,12 @@ test('wave titles wrap and enhanced example heights fit 360px',()=>{
     assert.ok(api.widgetLayout(name,d).height<=360,name);
   }
 });
+
+test('radar renders percentage ticks and bars retain legend values',()=>{
+  const data=example('radar'), labels=[];
+  const node=()=>({style:{},setAttribute(){},appendChild(){},set textContent(value){labels.push(value)}});
+  const document={createElementNS:node,getElementById:node};
+  runInNewContext(api.renderComponent('radar',data).html.match(/<script>(.*?)<\/script>/s)[1],{document});
+  assert.ok(labels.includes('40%'));
+  assert.doesNotMatch(api.renderComponent('bars3d',example('bars3d')).html,/\.bars3d [^{}]*ledger b\{display:none/);
+});
