@@ -29,3 +29,5 @@ th{border-bottom:2px solid var(--lime);background:var(--dark);color:#FAF8F2;font
   .steps li:before{background:var(--lime);color:var(--dark)}
   .grid section:first-child{border-color:var(--lime)}
 }
+
+main{max-height:600px;overflow:hidden}.compact>div{height:22px;font:14px/22px monospace}

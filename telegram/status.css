@@ -23,11 +23,13 @@ h2{margin:0 0 4px;font-size:12px;line-height:14px;font-weight:500;letter-spacing
 .empty{padding:8px;background:#f7f6f5;color:#585b50;border:1px solid #dedcd9}
 .foot{padding-top:4px;border-top:1px solid #dedcd9;color:#585b50;font-size:12px;line-height:14px}
 summary{display:block;cursor:pointer}summary::-webkit-details-marker{display:none}
-.bar{display:block}.mean,.job[open] .step,.status:has(.job[open]) .rows{display:none}
-.status:has(.job[open]) .mean{display:inline}
+.bar{display:block}.mean,.job[open] .step{display:none}
+
 .cells{background-image:repeating-linear-gradient(to right,transparent 0 10px,var(--gap,#fff) 10px 12px),linear-gradient(to right,#d4ff00 var(--stop),var(--track,#dedcd9) var(--stop))}
 @media(prefers-color-scheme:dark){
   :root,body,.card{color-scheme:dark;background:#15150f;color:#faf8f2;--gap:#15150f;--track:#4f5147}
   .card,.foot,.empty{border-color:#4f5147}.bar,.empty{background:#4f5147}
   h2,.state,.step,.detail,.foot,.empty{color:#c9c8b8}.s-b .bar i{background:#c9c8b8}
 }
+
+main{max-height:600px;overflow:hidden}.compact>div{height:22px;font:14px/22px monospace}

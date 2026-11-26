@@ -1,3 +1,4 @@
+import {visualPacks} from './visuals.mjs';
 import {statusPack} from './status.mjs';
 // Templates receive validated data. All text passes through the same encoder.
 const entities = {'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'};
@@ -9,6 +10,7 @@ const headings = d => [[d.prosLabel ?? 'Плюсы',d.pros],[d.consLabel ?? 'М�
 const join = items => items.join('\n');
 
 export const templates = {
+  ...visualPacks(escape),
   kpi: {
     body: d => '<div class="grid">'+d.metrics.map(m => '<section>'+line(m.label)+'<strong class="number">'+escape(m.value)+'</strong></section>').join('')+'</div>',
     caption: d => join(d.metrics.map(m => m.label+' '+m.value))
