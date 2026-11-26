@@ -158,8 +158,8 @@ test('radar renders percentage ticks and bars retain legend values',()=>{
   assert.doesNotMatch(api.renderComponent('bars3d',example('bars3d')).html,/\.bars3d [^{}]*ledger b\{display:none/);
 });
 
-function drawing(kind){
-  const data=example(kind), shapes=[], calls=[];
+function drawing(kind,data=example(kind)){
+  const shapes=[], calls=[];
   const ctx=new Proxy({measureText:s=>({width:s.length*8})},{
     get:(target,key)=>target[key]??((...args)=>calls.push([key,...args]))
   });
@@ -170,8 +170,29 @@ function drawing(kind){
   }};
   const html=api.renderComponent(kind,data).html;
   runInNewContext(html.match(/<script>(.*?)<\/script>/s)[1],{document,setInterval(){},clearInterval(){}});
-  return {shapes,calls};
+  return {shapes,calls,html};
 }
+
+for(const fixture of ['example','maximum'])test('architecture nodes fit the visible viewBox at 320px: '+fixture,()=>{
+  const schema=JSON.parse(readFileSync(new URL('./packs/architecture/schema.json',import.meta.url)));
+  const data=fixture==='example'?example('architecture'):maximum(schema);
+  if(fixture==='maximum'){
+    data.nodes.forEach((n,i)=>n.lane=n.lane.slice(1)+i);
+    data.edges.forEach((e,i)=>Object.assign(e,{source:i%7,target:i%7+1}));
+  }
+  const {shapes,html}=drawing('architecture',data);
+  const [x,y,width,height]=shapes.find(s=>s.tag==='svg').viewBox.split(' ').map(Number);
+  const boxes=shapes.filter(s=>s.tag==='rect' && s.stroke);
+  assert.equal(boxes.length,data.nodes.length);
+  for(const box of boxes)assert.ok(box.x>=x && box.y>=y &&
+    box.x+box.width<=x+width && box.y+box.height<=y+height);
+  // At 320px the widget has 10px padding on each side.
+  const stageCap=Number(html.match(/#stage\{max-height:(\d+)px/)[1]);
+  const svgCap=Number(html.match(/\.architecture #stage svg\{max-height:(\d+)px/)?.[1]??Infinity);
+  const displayedHeight=Math.min(300*height/width,svgCap);
+  assert.ok(displayedHeight<=stageCap,`SVG ${displayedHeight}px exceeds stage ${stageCap}px`);
+  assert.ok(api.widgetLayout('architecture',data).height<=360);
+});
 
 test('architecture titles and route pills have clearance',()=>{
   const {shapes}=drawing('architecture');

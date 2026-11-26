@@ -34,3 +34,6 @@ li.done:before{background:var(--muted)}li.now:before{background:#d4ff00;animatio
 :is(.radar,.line-area,.bars3d,.donut) #stage:has(svg,canvas)~.ledger li{height:auto;gap:4px;font-size:12px;border:0}
 :is(.radar,.line-area,.bars3d,.donut) #stage:has(svg,canvas)~.ledger li:before{display:none}
 .ledger li button{padding:0}
+.architecture:has(#stage svg){display:flex;flex-direction:column;max-height:360px}
+.architecture #stage{display:flex;min-height:0}
+.architecture #stage svg{max-height:240px}

@@ -50,6 +50,7 @@ export function layoutFor(name,d,template){
     const heading=28+26*lines(d.title,22);
     const legendRows=d.nodes?1:name==='radar'?entries:Math.ceil(entries/2);
     const plot=name==='donut'||name==='line-area'?173:name.endsWith('3d')?234:name==='radar'?209:240;
+    if(name==='architecture')return {height:Math.min(360,heading+6+plot+22),omitted:0};
     return {height:heading+6+(road?48*entries:plot+22*legendRows),omitted:0};
   }
   const height=legacyHeight(name,d);
